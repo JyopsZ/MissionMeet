@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "express-fileupload": "^1.5.1",
+    "express-session": "^1.18.1",
+    "firebase": "^11.5.0",
+    "firebase-admin": "^13.2.0",
+    "hbs": "^4.2.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7"
+  },
+  "name": "missionmeet",
+  "version": "1.0.0",
+  "description": "This web application connects organizations with users. Organizations could display their current events by paying a subscription fee. Users can then seamlessly join these events.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
