@@ -11,10 +11,10 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="View/about.html">About</a></li>
+            <li><a href="View/services.html">Services</a></li>
+            <li><a href="View/contact.html">Contact</a></li>
         </ul>
     </nav>
 
@@ -24,8 +24,8 @@
             <h1>Welcome to Mission Meet</h1>
             <p>Join organizations, explore events, and connect with the community.</p>
             <div class="cta-btns">
-                <a href="login.html" class="cta-btn">Login</a>
-                <a href="signup.html" class="cta-btn">Sign Up</a>
+                <a href="View/Login Page.html" class="cta-btn">Login</a>
+                <a href="View/SignUp Page.html" class="cta-btn">Sign Up</a>
             </div>
         </div>
     </header>
@@ -41,29 +41,8 @@
     <!-- Events Section -->
     <section class="events">
         <h2>Upcoming Events</h2>
-        <div class="event-container">
-            <div class="event">
-                <h3>Event 1</h3>
-                <p>Details about the event.</p>
-                <button class="event-btn">View Details</button>
-            </div>
-            <div class="event">
-                <h3>Event 2</h3>
-                <p>Details about the event.</p>
-                <button class="event-btn">View Details</button>
-            </div>
-            <div class="event">
-                <h3>Event 3</h3>
-                <p>Details about the event.</p>
-                <button class="event-btn">View Details</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="users">
-        <h2>Registered Users</h2>
-        <div id="users-container">
-            <!-- This is where users-subContainer will be dynamically added via js-->
+        <div class="event-container" id="event-container">
+            
         </div>
     </section>
 
@@ -76,15 +55,17 @@
 
         import { getUsers } from "./Controller/DB_CRUD.js";
         import { getOrgs } from "./Controller/DB_CRUD.js";
+        import { getEvents } from "./Controller/DB_CRUD.js";
 
         document.addEventListener('DOMContentLoaded', async () => {
-        
-            const users = await getUsers();
-            displayUsers(users);
 
             const orgs = await getOrgs();
             displayOrgs(orgs);
+
+            const events = await getEvents();
+            displayEvents(events);
         });
+        
 
         function displayOrgs(orgs) {
             
@@ -108,25 +89,25 @@
                 orgsContainer.appendChild(orgElement);
             });
         }
-        
-        function displayUsers(users) {
-            const usersContainer = document.getElementById('users-container');
-            
-            if (users.length === 0) {
-                usersContainer.innerHTML = '<p>No users found</p>';
+
+        function displayEvents(events) {
+
+            const eventsContainer = document.getElementById('event-container');
+
+            if (events.length === 0) {
+                eventsContainer.innerHTML = '<h3>No events found</h3>';
                 return;
             }
-            
-            users.forEach(user => {
-                const userElement = document.createElement('div');
-                userElement.className = 'user-subcontainer';
-                userElement.innerHTML = `
-                    <h3>${user.getName()}</h3>
-                    <p>Email: ${user.getEmail()}</p>
-                    <p>Contact: ${user.getContact()}</p>
-                    <p>Events Joined: ${user.getEventsJoined() ? user.getEventsJoined().length : 0}</p>
+
+            events.forEach(event => {
+                const eventElement = document.createElement('div');
+                eventElement.className = 'event-subcontainer';
+                eventElement.innerHTML = `
+                    <h3>${event.getName()}</h3>
+                    <p>${event.getDetails()}</p>
+                    <button class="event-btn">View Details</button>
                 `;
-                usersContainer.appendChild(userElement);
+                eventsContainer.appendChild(eventElement);
             });
         }
     </script>

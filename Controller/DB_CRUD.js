@@ -4,6 +4,7 @@
 
 import { User } from "../Model/User.js";
 import { Org } from "../Model/Org.js";
+import  { Event } from "../Model/Event.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBzG830umF6WH_WM6JKuGTrWTkyr7XVQ0A",
@@ -54,7 +55,7 @@ async function getOrgs() {  // READ: retrieve all data from orgs collection
 }
 
 /*
-========================= ORG FUNCTIONS =================================
+========================= EVENT FUNCTIONS =================================
 */
 let eventsArray = [];
 
@@ -70,7 +71,7 @@ async function getEvents() {  // READ: retrieve all data from events collection
 
       doc.id,
       eventData.event_name,
-      eventData.event_etails,
+      eventData.event_details,
       eventData.event_date,
       eventData.image,
       eventData.members_joined
@@ -125,3 +126,6 @@ export { getUsers };
 
 // ORG EXPORT
 export { getOrgs };
+
+// EVENT EXPORT
+export { getEvents };
