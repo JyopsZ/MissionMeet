@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
     <link rel="stylesheet" href="View/landing-page-style.css">
+    <link rel="stylesheet" href="View/spinner.css">
 </head>
 <body>
 
@@ -33,16 +34,20 @@
     <!-- Organizations Section -->
     <section class="organizations">
         <h2>Featured Organizations</h2>
-        <div class="organization-container" id="organization-container">
 
+        <div class="organization-container" id="organization-container">
+            <div class="loader">
+            </div>
         </div>
     </section>
 
     <!-- Events Section -->
     <section class="events">
         <h2>Upcoming Events</h2>
+
         <div class="event-container" id="event-container">
-            
+            <div class="loader">
+            </div>
         </div>
     </section>
 
@@ -76,6 +81,7 @@
                 return;
             }
 
+            orgsContainer.innerHTML = '';
             const displayedOrgs = orgs.slice(0, 3);
 
             displayedOrgs.forEach(org => {
@@ -98,6 +104,8 @@
                 eventsContainer.innerHTML = '<h3>No events found</h3>';
                 return;
             }
+
+            eventsContainer.innerHTML = '';
 
             events.forEach(event => {
                 const eventElement = document.createElement('div');

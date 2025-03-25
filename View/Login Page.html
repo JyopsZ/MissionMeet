@@ -48,16 +48,10 @@
             
             e.preventDefault();
 
-            console.log("Login button clicked"); // TEST
-
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            console.log("Email:", email, "Password:", password); // TEST
-
             const result = await verifyLogin(email, password);
-
-            console.log("Result:", result); // TEST
 
             if (result.success) {
 
@@ -65,6 +59,11 @@
                 localStorage.setItem('userID', result.userID);
                 localStorage.setItem('userName', result.name);
                 localStorage.setItem('userEmail', result.email);
+            }
+
+            else {
+
+                alert(result.message);
             }
 
             if (result.userType === "admin") {
