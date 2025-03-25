@@ -33,19 +33,8 @@
     <!-- Organizations Section -->
     <section class="organizations">
         <h2>Featured Organizations</h2>
-        <div class="organization-container">
-            <div class="organization">
-                <h3>Organization 1</h3>
-                <p>About this organization and its mission.</p>
-            </div>
-            <div class="organization">
-                <h3>Organization 2</h3>
-                <p>About this organization and its mission.</p>
-            </div>
-            <div class="organization">
-                <h3>Organization 3</h3>
-                <p>About this organization and its mission.</p>
-            </div>
+        <div class="organization-container" id="organization-container">
+
         </div>
     </section>
 
@@ -74,7 +63,7 @@
     <section class="users">
         <h2>Registered Users</h2>
         <div id="users-container">
-            <!-- User cards will be dynamically inserted here -->
+            <!-- This is where users-subContainer will be dynamically added via js-->
         </div>
     </section>
 
@@ -86,12 +75,39 @@
     <script type="module">
 
         import { getUsers } from "./Controller/DB_CRUD.js";
+        import { getOrgs } from "./Controller/DB_CRUD.js";
 
         document.addEventListener('DOMContentLoaded', async () => {
         
             const users = await getUsers();
             displayUsers(users);
-    });
+
+            const orgs = await getOrgs();
+            displayOrgs(orgs);
+        });
+
+        function displayOrgs(orgs) {
+            
+            const orgsContainer = document.getElementById('organization-container');
+
+            if (orgs.length === 0) {
+                orgsContainer.innerHTML = '<h3>No organizations found</h3>';
+                return;
+            }
+
+            const displayedOrgs = orgs.slice(0, 3);
+
+            displayedOrgs.forEach(org => {
+                const orgElement = document.createElement('div');
+                orgElement.className = 'organization-subcontainer';
+                orgElement.innerHTML = `
+                    <h3>${org.getName()}</h3>
+                    <img src="/View/Images/${org.getLogo()}" class="org-logo">
+                    <p>${org.getDescription()}</p>
+                `;
+                orgsContainer.appendChild(orgElement);
+            });
+        }
         
         function displayUsers(users) {
             const usersContainer = document.getElementById('users-container');
@@ -103,7 +119,7 @@
             
             users.forEach(user => {
                 const userElement = document.createElement('div');
-                userElement.className = 'user-card';
+                userElement.className = 'user-subcontainer';
                 userElement.innerHTML = `
                     <h3>${user.getName()}</h3>
                     <p>Email: ${user.getEmail()}</p>

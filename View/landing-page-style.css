@@ -103,7 +103,7 @@ body {
     gap: 20px;
 }
 
-.organization {
+.organization-subcontainer {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -114,6 +114,13 @@ body {
 
 .organization h3 {
     font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.org-logo {
+    justify-content: center;
+    width: 250px;
+    height: 200px;
     margin-bottom: 10px;
 }
 

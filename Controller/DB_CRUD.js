@@ -3,6 +3,7 @@
  import { getFirestore, getDocs, doc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 import { User } from "../Model/User.js";
+import { Org } from "../Model/Org.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBzG830umF6WH_WM6JKuGTrWTkyr7XVQ0A",
@@ -19,20 +20,87 @@ const firebaseConfig = {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+/*
+========================= ORG FUNCTIONS =================================
+*/
+let orgsArray = [];
+
+async function getOrgs() {  // READ: retrieve all data from orgs collection
+
+  orgsArray = [];
+
+  const querySnapshot = await getDocs(collection(db, "Orgs"));
+  querySnapshot.forEach((doc) => {
+
+    const orgData = doc.data();
+    const org = new Org(
+
+      doc.id,
+      orgData.org_name,
+      orgData.org_description,
+      orgData.org_address,
+      orgData.org_email,
+      orgData.org_contact,
+      orgData.org_logo,
+      orgData.admins,
+      orgData.events
+    );
+
+    orgsArray.push(org);
+  });
+
+  console.log("Orgs fetched successfully:", orgsArray);
+  return orgsArray;
+}
+
+/*
+========================= ORG FUNCTIONS =================================
+*/
+let eventsArray = [];
+
+async function getEvents() {  // READ: retrieve all data from events collection
+
+  eventsArray = [];
+
+  const querySnapshot = await getDocs(collection(db, "Events"));
+  querySnapshot.forEach((doc) => {
+
+    const eventData = doc.data();
+    const event = new Event(
+
+      doc.id,
+      eventData.event_name,
+      eventData.event_etails,
+      eventData.event_date,
+      eventData.image,
+      eventData.members_joined
+    );
+
+    eventsArray.push(event);
+  });
+
+  console.log("Events fetched successfully:", eventsArray);
+  return eventsArray;
+}
+
+
+/*
+========================= USER FUNCTIONS =================================
+*/
 let usersArray = [];
 
-async function getUsers() {
+async function getUsers() {  // READ: retrieve all data from users collection
 
   usersArray = [];
 
   const querySnapshot = await getDocs(collection(db, "Users"));
   querySnapshot.forEach((doc) => {
 
-    console.log(`${doc.id} => ${doc.data()}`);
+    //console.log(`${doc.id} => ${doc.data()}`);
     const userData = doc.data();
     const user = new User(
       
-      userData.userID,
+      doc.id,
       userData.name,
       userData.email,
       userData.password,
@@ -47,4 +115,13 @@ async function getUsers() {
   return usersArray;
 }
 
-export { getUsers };
+
+/*
+========================= EXPORTS =================================
+*/
+
+// USER EXPORT
+export { getUsers }; 
+
+// ORG EXPORT
+export { getOrgs };
