@@ -1,6 +1,6 @@
  // Import the functions you need from the SDKs you need
  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
- import { getFirestore, getDocs, doc, collection } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+ import { getFirestore, getDocs, doc, collection, setDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 import { User } from "../Model/User.js";
 import { Org } from "../Model/Org.js";
@@ -31,8 +31,8 @@ async function getOrgs() {  // READ: retrieve all data from orgs collection
 
   orgsArray = [];
 
-  const querySnapshot = await getDocs(collection(db, "Orgs"));
-  querySnapshot.forEach((doc) => {
+  const q = await getDocs(collection(db, "Orgs"));
+  q.forEach((doc) => {
 
     const orgData = doc.data();
     const org = new Org(
@@ -64,8 +64,8 @@ async function getEvents() {  // READ: retrieve all data from events collection
 
   eventsArray = [];
 
-  const querySnapshot = await getDocs(collection(db, "Events"));
-  querySnapshot.forEach((doc) => {
+  const q = await getDocs(collection(db, "Events"));
+  q.forEach((doc) => {
 
     const eventData = doc.data();
     const event = new Event(
@@ -95,8 +95,8 @@ async function getUsers() {  // READ: retrieve all data from users collection
 
   usersArray = [];
 
-  const querySnapshot = await getDocs(collection(db, "Users"));
-  querySnapshot.forEach((doc) => {
+  const q = await getDocs(collection(db, "Users"));
+  q.forEach((doc) => {
 
     //console.log(`${doc.id} => ${doc.data()}`);
     const userData = doc.data();
@@ -126,8 +126,8 @@ async function getAdmins() {  // READ: retrieve all data from admins collection
 
   adminsArray = [];
 
-  const querySnapshot = await getDocs(collection(db, "Admins"));
-  querySnapshot.forEach((doc) => {
+  const q = await getDocs(collection(db, "Admins"));
+  q.forEach((doc) => {
 
     const  adminData = doc.data();
     const admin = new Admin(
@@ -185,8 +185,8 @@ async function verifyLogin(email, password) {
 
 async function verifyAdminLogin(email, password) {
   
-  const querySnapshot = await getDocs(collection(db, "Admins"));
-  for (const doc of querySnapshot.docs) {
+  const q = await getDocs(collection(db, "Admins"));
+  for (const doc of q.docs) {
     const adminData = doc.data();
     if (adminData.email === email && adminData.password === password) {
       
@@ -207,8 +207,8 @@ async function verifyAdminLogin(email, password) {
 
 async function verifyUserLogin(email, password) {
 
-  const querySnapshot = await getDocs(collection(db, "Users"));
-  for (const doc of querySnapshot.docs) {
+  const q = await getDocs(collection(db, "Users"));
+  for (const doc of q.docs) {
     const userData = doc.data();
     if (userData.email === email && userData.password === password) {
 
@@ -229,6 +229,57 @@ async function verifyUserLogin(email, password) {
 
 
 /*
+========================= SIGNUP FUNCTIONS =================================
+*/
+async function userSignup (name, contact, email, password) {
+
+  const q = await getDocs(collection(db, "Users"));
+  for (const doc of q.docs) {
+    const userData = doc.data();
+    if (userData.email === email) { // Check if email already exists
+
+      return {
+        success: false,
+        message: "Email already exists. Please try again."
+      };
+    }
+  }
+
+  let userID = "U00001"; // Default user ID, sets it to this value if none exist
+  let highestID = 0;
+
+  for (const doc of q.docs) {
+
+    const docID = doc.id;
+    const numeric = parseInt(docID.substring(1));
+
+    if (numeric > highestID) {
+      highestID = numeric;
+    }
+  }
+  
+  const newNumeric = highestID + 1;
+  userID = "U" + newNumeric.toString().padStart(5, "0");
+
+  await setDoc(doc(db, "Users", userID), {
+
+    name: name,
+    email: email,
+    password: password,
+    contact_no: contact,
+    events_joined: []
+  });
+
+  return {
+    
+    success: true,
+    message: "Signup successful",
+    userID: userID
+  };
+  
+}
+
+/*
 ========================= EXPORTS =================================
 */
 
@@ -245,3 +296,4 @@ export { getEvents };
 export { getAdmins };
 
 export { verifyLogin };
+export { userSignup };
