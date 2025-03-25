@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up Page</title>
-    <link rel="stylesheet" href="signUpStyle.css">
+    <link rel="stylesheet" href="../signUpStyle.css">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
     </header>
 
     <div class="signup-container">
-        <h1>Sign Up</h1>
+        <h1>Admin Sign Up</h1>
         <form action="#" method="POST"> <!-- change # change it base on code-->
             <label for="userName">Name:</label>
             <input type="text" id="userName"><br>
@@ -34,7 +34,7 @@
         </form>
 
         <p>Already have an account? <a href="login.html">Login Here</a></p>
-        <p>Part of an org? <a href="Admin/Admin_signup.html">Sign Up Here</a></p>
+        <p>Return to User SignUp<a href="../SignUp Page.html"> Back</a></p>
     </div>
 
     <footer>
@@ -43,7 +43,7 @@
 
     <script type="module">
         
-        import { userSignup } from "../Controller/DB_CRUD.js";
+        import { adminSignup } from "../../Controller/DB_CRUD.js";
 
         document.addEventListener('submit', async (e) => {
             
@@ -65,11 +65,11 @@
                 return;
             }
 
-            const result = await userSignup(userName, userContact, userEmail, userPassword);
+            const result = await adminSignup(userName, userContact, userEmail, userPassword);
 
             if (result.success) {
                 alert(result.message);
-                window.location.href = 'Login Page.html';
+                window.location.href = '../Login Page.html';
             }
 
             else {

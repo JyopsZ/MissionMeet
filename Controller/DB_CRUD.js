@@ -279,6 +279,55 @@ async function userSignup (name, contact, email, password) {
   
 }
 
+
+async function adminSignup (name, contact, email, password) {
+
+  const q = await getDocs(collection(db, "Admins"));
+  for (const doc of q.docs) {
+    const userData = doc.data();
+    if (userData.email === email) { // Check if email already exists
+
+      return {
+        success: false,
+        message: "Email already exists. Please try again."
+      };
+    }
+  }
+
+  let adminID = "A00001"; // Default admin ID, sets it to this value if none exist
+  let highestID = 0;
+
+  for (const doc of q.docs) {
+
+    const docID = doc.id;
+    const numeric = parseInt(docID.substring(1));
+
+    if (numeric > highestID) {
+      highestID = numeric;
+    }
+  }
+  
+  const newNumeric = highestID + 1;
+  adminID = "A" + newNumeric.toString().padStart(5, "0");
+
+  await setDoc(doc(db, "Admins", adminID), {
+
+    name: name,
+    email: email,
+    password: password,
+    contact_no: contact,
+    events_joined: []
+  });
+
+  return {
+    
+    success: true,
+    message: "Signup successful",
+    adminID: adminID
+  };
+  
+}
+
 /*
 ========================= EXPORTS =================================
 */
@@ -297,3 +346,4 @@ export { getAdmins };
 
 export { verifyLogin };
 export { userSignup };
+export { adminSignup };
