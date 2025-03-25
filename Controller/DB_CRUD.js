@@ -5,6 +5,7 @@
 import { User } from "../Model/User.js";
 import { Org } from "../Model/Org.js";
 import  { Event } from "../Model/Event.js";
+import { Admin } from "../Model/Admin.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBzG830umF6WH_WM6JKuGTrWTkyr7XVQ0A",
@@ -116,6 +117,116 @@ async function getUsers() {  // READ: retrieve all data from users collection
   return usersArray;
 }
 
+/*
+========================= ADMIN FUNCTIONS =================================
+*/
+let adminsArray = [];
+
+async function getAdmins() {  // READ: retrieve all data from admins collection
+
+  adminsArray = [];
+
+  const querySnapshot = await getDocs(collection(db, "Admins"));
+  querySnapshot.forEach((doc) => {
+
+    const  adminData = doc.data();
+    const admin = new Admin(
+
+      doc.id,
+      adminData.name,
+      adminData.email,
+      adminData.password,
+      adminData.contact_no,
+      adminData.org_affiliation
+    );
+
+    adminsArray.push(admin);
+  });
+
+  console.log("Admins fetched successfully:", adminsArray);
+  return adminsArray;
+}
+
+
+/*
+========================= LOGIN FUNCTIONS =================================
+*/
+async function verifyLogin(email, password) {
+  
+  const adminResult = await verifyAdminLogin(email, password);
+  if (adminResult.success) {
+    return {
+      
+      success: true,
+      userType: "admin",
+      userID: adminResult.userID,
+      name: adminResult.name,
+      email: adminResult.email
+    };
+  }
+  
+  const userResult = await verifyUserLogin(email, password);
+  if (userResult.success) {
+    return {
+      
+      success: true,
+      userType: "user",
+      userID: userResult.userID,
+      name: userResult.name,
+      email: userResult.email
+    };
+  }
+  
+  return { 
+    success: false, 
+    message: "Invalid email or password. Please try again." 
+  };
+}
+
+async function verifyAdminLogin(email, password) {
+  
+  const querySnapshot = await getDocs(collection(db, "Admins"));
+  for (const doc of querySnapshot.docs) {
+    const adminData = doc.data();
+    if (adminData.email === email && adminData.password === password) {
+      
+      return {
+        success: true,
+        message: "Login successful",
+        userType: "admin",
+        userID: doc.id
+      };
+    }
+  }
+  
+  return {
+    success: false,
+    message: "Invalid email or password. Please try again."
+  };
+}
+
+async function verifyUserLogin(email, password) {
+
+  const querySnapshot = await getDocs(collection(db, "Users"));
+  for (const doc of querySnapshot.docs) {
+    const userData = doc.data();
+    if (userData.email === email && userData.password === password) {
+
+      return {
+        success: true,
+        message: "Login successful",
+        userType: "user",
+        userID: doc.id
+      };
+    }
+  }
+
+  return {
+    success: false,
+    message: "Invalid email or password. Please try again."
+  };
+}
+
 
 /*
 ========================= EXPORTS =================================
@@ -129,3 +240,8 @@ export { getOrgs };
 
 // EVENT EXPORT
 export { getEvents };
+
+// ADMIN EXPORT
+export { getAdmins };
+
+export { verifyLogin };

@@ -12,7 +12,7 @@
     </header>
     <div class="login-container">
         <h1>Login</h1>
-        <form>
+        <form id="login-form">
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" placeholder="Enter your email"><br>
             
@@ -39,5 +39,44 @@
     <footer>
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
     </footer>
+
+    <script type="module">
+
+        import { verifyLogin } from "../Controller/DB_CRUD.js";
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            
+            e.preventDefault();
+
+            console.log("Login button clicked"); // TEST
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            console.log("Email:", email, "Password:", password); // TEST
+
+            const result = await verifyLogin(email, password);
+
+            console.log("Result:", result); // TEST
+
+            if (result.success) {
+
+                localStorage.setItem('userType', result.userType);
+                localStorage.setItem('userID', result.userID);
+                localStorage.setItem('userName', result.name);
+                localStorage.setItem('userEmail', result.email);
+            }
+
+            if (result.userType === "admin") {
+
+                window.location.href = 'Admin/Admin_dashboard.html';
+            }
+
+            else if (result.userType === "user") {
+                
+                window.location.href = 'Home Page.html';
+            }
+        });
+    </script>
 </body>
 </html>
