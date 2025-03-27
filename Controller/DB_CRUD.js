@@ -44,6 +44,7 @@ async function getOrgs() {  // READ: retrieve all data from orgs collection
       orgData.org_email,
       orgData.org_contact,
       orgData.org_logo,
+      orgData.org_subplan,
       orgData.admins,
       orgData.events
     );
