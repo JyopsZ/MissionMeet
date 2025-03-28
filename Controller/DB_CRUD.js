@@ -1,6 +1,6 @@
  // Import the functions you need from the SDKs you need
  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
- import { getFirestore, getDocs, doc, collection, setDoc, arrayUnion, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+ import { getFirestore, getDocs, doc, collection, setDoc, arrayUnion, updateDoc, getDoc, arrayRemove } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 import { User } from "../Model/User.js";
 import { Org } from "../Model/Org.js";
@@ -327,6 +327,7 @@ async function adminSignup (name, contact, email, password) {
   
 }
 
+// JOIN EVENT
 async function joinEvent(userID, eventID) {
   try {
     const userRef = doc(db, "Users", userID);
@@ -364,9 +365,15 @@ async function joinEvent(userID, eventID) {
       events_joined: arrayUnion(eventID),
     });
 
-    await updateDoc(eventRef, {
-      members_joined: arrayUnion(userID),
-    });
+if (!eventData.members_joined) {
+  await updateDoc(eventRef, {
+    members_joined: [],
+  });
+}
+
+await updateDoc(eventRef, {
+  members_joined: arrayUnion(userID),
+});
 
     return { success: true, message: "You have successfully joined the event!" };
 
@@ -375,12 +382,37 @@ async function joinEvent(userID, eventID) {
     return { success: false, message: "Something went wrong. Please try again." };
   }
 }
+
+// DELETE EVENT
+async function cancelEvent(userID, eventID) {
+  try {
+      const userRef = doc(db, "Users", userID);
+      const eventRef = doc(db, "Events", eventID);
+
+      await updateDoc(userRef, {
+          events_joined: arrayRemove(eventID)
+      });
+
+      await updateDoc(eventRef, {
+          members_joined: arrayRemove(userID)
+      });
+
+      return { success: true, message: "Successfully cancelled participation in the event." };
+  } catch (error) {
+      console.error("Error cancelling event:", error);
+      return { success: false, message: "An error occurred while cancelling the event." };
+  }
+}
+
 /*
 ========================= EXPORTS =================================
 */
 
 // JOIN EVENT EXPORT
 export { joinEvent };
+
+// DEELETE EVENT EXPORT
+export { cancelEvent };
 
 // USER EXPORT
 export { getUsers }; 

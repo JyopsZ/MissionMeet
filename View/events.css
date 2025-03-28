@@ -207,13 +207,13 @@ footer {
 }
 
 #successModal {
+    display: none; /* ← Fixes the issue */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
-    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -224,4 +224,95 @@ footer {
     padding: 20px 30px;
     border-radius: 8px;
     text-align: center;
+}
+
+/* Joined Events Page Container */
+#joinedEventsContainer {
+    margin-top: 120px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Cancel Button */
+.cancel-btn {
+    padding: 10px 20px;
+    background-color: #f44336; /* red */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.cancel-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Loader Styling */
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4CAF50;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 50px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========================== */
+/* Joined Events Modal Styles */
+/* ========================== */
+
+#joined-confirmModal,
+#joined-successModal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#joined-confirmModal .modal-content,
+#joined-successModal .modal-content {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#joined-confirmYes,
+#joined-successOk {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 5px 0;
+}
+
+#joined-confirmNo {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 5px 0;
 }
