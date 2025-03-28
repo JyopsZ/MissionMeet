@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="loginStyle.css">
+    <title>Login Page</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Mission Meet</h1> <!-- Change na lang to -->
+    </header>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="login-form">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" placeholder="Enter your email"><br>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password"><br>
+            
+            <div>
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember" class="checkbox-label">Remember me</label>
+            </div>
+            
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <div class="forgot-password">
+            <a href="#">Forgot Password?</a> <!-- replace # with link  --> 
+        </div>
+
+        <div class="signUp">
+            <a href="SignUp Page.html">Sign Up</a> <!-- replace # with link  --> 
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+
+        import { verifyLogin } from "../Controller/DB_CRUD.js";
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const result = await verifyLogin(email, password);
+
+            if (result.success) {
+
+                localStorage.setItem('userType', result.userType);
+                localStorage.setItem('userID', result.userID);
+                localStorage.setItem('userName', result.name);
+                localStorage.setItem('userEmail', result.email);
+            }
+
+            else {
+
+                alert(result.message);
+            }
+
+            if (result.userType === "admin") {
+
+                window.location.href = 'Admin/Admin_dashboard.html';
+            }
+
+            else if (result.userType === "user") {
+                
+                window.location.href = 'Home Page.html';
+            }
+        });
+    </script>
+</body>
+</html>
