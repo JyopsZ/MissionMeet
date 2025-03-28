@@ -1,6 +1,6 @@
  // Import the functions you need from the SDKs you need
  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
- import { getFirestore, getDocs, doc, collection, setDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+ import { getFirestore, getDocs, doc, collection, setDoc, arrayUnion, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 import { User } from "../Model/User.js";
 import { Org } from "../Model/Org.js";
@@ -84,7 +84,6 @@ async function getEvents() {  // READ: retrieve all data from events collection
   console.log("Events fetched successfully:", eventsArray);
   return eventsArray;
 }
-
 
 /*
 ========================= USER FUNCTIONS =================================
@@ -328,9 +327,60 @@ async function adminSignup (name, contact, email, password) {
   
 }
 
+async function joinEvent(userID, eventID) {
+  try {
+    const userRef = doc(db, "Users", userID);
+    const eventRef = doc(db, "Events", eventID);
+
+    // Get user document
+    const userDoc = await getDoc(userRef);
+    if (!userDoc.exists()) {
+      console.error("User document not found:", userID);
+      return { success: false, message: "User not found." };
+    }
+
+    // Get event document
+    const eventDoc = await getDoc(eventRef);
+    if (!eventDoc.exists()) {
+      console.error("Event document not found:", eventID);
+      return { success: false, message: "Event not found." };
+    }
+
+    const userData = userDoc.data();
+    const eventData = eventDoc.data();
+
+    // Check if user already joined the event
+    if (userData.events_joined?.includes(eventID)) {
+      return { success: false, message: "You have already joined this event!" };
+    }
+
+    // Check if event already contains this user
+    if (eventData.members_joined?.includes(userID)) {
+      return { success: false, message: "You are already part of this event!" };
+    }
+
+    // Proceed with join
+    await updateDoc(userRef, {
+      events_joined: arrayUnion(eventID),
+    });
+
+    await updateDoc(eventRef, {
+      members_joined: arrayUnion(userID),
+    });
+
+    return { success: true, message: "You have successfully joined the event!" };
+
+  } catch (error) {
+    console.error("Error joining event:", error);
+    return { success: false, message: "Something went wrong. Please try again." };
+  }
+}
 /*
 ========================= EXPORTS =================================
 */
+
+// JOIN EVENT EXPORT
+export { joinEvent };
 
 // USER EXPORT
 export { getUsers }; 
