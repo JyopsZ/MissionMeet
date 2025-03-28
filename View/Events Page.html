@@ -76,113 +76,113 @@
 
             let eventsList = [];
 
-            document.addEventListener('DOMContentLoaded', async () => {
-                eventsList = await getEvents();
-                displayEvents(eventsList);
-            });
-
-            function displayEvents(events) {
-                const eventsContainer = document.getElementById('event-container');
-                const loader = document.querySelector('.loader');
-                loader.style.display = 'none';
-
-                if (events.length === 0) {
-                    eventsContainer.innerHTML = '<h3>No events found</h3>';
-                    return;
-                }
-
-                eventsContainer.innerHTML = '';
-
-                events.forEach(event => {
-                    const eventElement = document.createElement('div');
-                    eventElement.className = 'event-subcontainer';
-                    eventElement.innerHTML = `
-                        <h3>${event.name}</h3>
-                        <p>${event.details}</p>
-                        <button class="event-btn" data-event-id="${event.eventID}">View Event</button>
-                    `;
-                    eventsContainer.appendChild(eventElement);
-                });
-
-                document.querySelectorAll('.event-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const eventId = btn.getAttribute('data-event-id');
-                        openEventModal(eventId);
+                    document.addEventListener('DOMContentLoaded', async () => {
+                        eventsList = await getEvents();
+                        displayEvents(eventsList);
                     });
-                });
-            }
 
-            function getEventById(eventId) {
-                return eventsList.find(event => String(event.eventID) === String(eventId));
-            }
+                    function displayEvents(events) {
+                        const eventsContainer = document.getElementById('event-container');
+                        const loader = document.querySelector('.loader');
+                        loader.style.display = 'none';
 
-            function openEventModal(eventId) {
-                const event = getEventById(eventId);
-                const modal = document.getElementById('eventModal');
-                const title = document.getElementById('eventTitle');
-                const details = document.getElementById('eventDetails');
-                const date = document.getElementById('eventDate');
-                const joinBtn = document.getElementById('joinEventBtn');
-                const cancelBtn = document.getElementById('cancelBtn');
+                        if (events.length === 0) {
+                            eventsContainer.innerHTML = '<h3>No events found</h3>';
+                            return;
+                        }
 
-                title.textContent = event.name;
-                details.textContent = event.details;
-                date.textContent = event.date;
+                        eventsContainer.innerHTML = '';
 
-                modal.style.display = "block";
+                        events.forEach(event => {
+                            const eventElement = document.createElement('div');
+                            eventElement.className = 'event-subcontainer';
+                            eventElement.innerHTML = `
+                                <h3>${event.name}</h3>
+                                <p>${event.details}</p>
+                                <button class="event-btn" data-event-id="${event.eventID}">View Event</button>
+                            `;
+                            eventsContainer.appendChild(eventElement);
+                        });
 
-                joinBtn.onclick = function () {
-                    openConfirmJoinModal(eventId);
-                };
-
-                cancelBtn.onclick = function () {
-                    modal.style.display = "none";
-                };
-            }
-
-            document.getElementById('closeEventModal').addEventListener('click', function () {
-                document.getElementById('eventModal').style.display = "none";
-            });
-
-            function openConfirmJoinModal(eventId) {
-                const confirmModal = document.getElementById('confirmModal');
-                const confirmJoin = document.getElementById('confirmJoin');
-                const cancelJoin = document.getElementById('cancelJoin');
-
-                confirmModal.style.display = "block";
-
-                confirmJoin.onclick = async function () {
-                    confirmModal.style.display = "none";
-
-                    const userID = localStorage.getItem('userID');
-                    if (!userID) {
-                        alert("User not logged in.");
-                        return;
+                        document.querySelectorAll('.event-btn').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const eventId = btn.getAttribute('data-event-id');
+                                openEventModal(eventId);
+                            });
+                        });
                     }
 
-                    const result = await joinEvent(userID, eventId);
-
-                    if (result.success) {
-                        document.getElementById('eventModal').style.display = "none";
-                        document.getElementById('successModal').style.display = "block";
-                    } else {
-                        document.getElementById('eventModal').style.display = "none";
-                        document.getElementById('alreadyJoinedModal').style.display = "block";
+                    function getEventById(eventId) {
+                        return eventsList.find(event => String(event.eventID) === String(eventId));
                     }
-                };
 
-                cancelJoin.onclick = function () {
-                    confirmModal.style.display = "none";
-                };
-            }
+                    function openEventModal(eventId) {
+                        const event = getEventById(eventId);
+                        const modal = document.getElementById('eventModal');
+                        const title = document.getElementById('eventTitle');
+                        const details = document.getElementById('eventDetails');
+                        const date = document.getElementById('eventDate');
+                        const joinBtn = document.getElementById('joinEventBtn');
+                        const cancelBtn = document.getElementById('cancelBtn');
 
-            document.getElementById('closeSuccess').addEventListener('click', function () {
-                document.getElementById('successModal').style.display = "none";
-            });
+                        title.textContent = event.name;
+                        details.textContent = event.details;
+                        date.textContent = event.date;
 
-            document.getElementById('closeAlreadyJoined').addEventListener('click', function () {
-                document.getElementById('alreadyJoinedModal').style.display = "none";
-            });
+                        modal.style.display = "block";
+
+                        joinBtn.onclick = function () {
+                            openConfirmJoinModal(eventId);
+                        };
+
+                        cancelBtn.onclick = function () {
+                            modal.style.display = "none";
+                        };
+                    }
+
+                    document.getElementById('closeEventModal').addEventListener('click', function () {
+                        document.getElementById('eventModal').style.display = "none";
+                    });
+
+                    function openConfirmJoinModal(eventId) {
+                        const confirmModal = document.getElementById('confirmModal');
+                        const confirmJoin = document.getElementById('confirmJoin');
+                        const cancelJoin = document.getElementById('cancelJoin');
+
+                        confirmModal.style.display = "block";
+
+                        confirmJoin.onclick = async function () {
+                            confirmModal.style.display = "none";
+
+                            const userID = localStorage.getItem('userID');
+                            if (!userID) {
+                                alert("User not logged in.");
+                                return;
+                            }
+
+                            const result = await joinEvent(userID, eventId);
+
+                            if (result.success) {
+                                document.getElementById('eventModal').style.display = "none";
+                                document.getElementById('successModal').style.display = "block";
+                            } else {
+                                document.getElementById('eventModal').style.display = "none";
+                                document.getElementById('alreadyJoinedModal').style.display = "block";
+                            }
+                        };
+
+                        cancelJoin.onclick = function () {
+                            confirmModal.style.display = "none";
+                        };
+                    }
+
+                    document.getElementById('closeSuccess').addEventListener('click', function () {
+                        document.getElementById('successModal').style.display = "none";
+                    });
+
+                    document.getElementById('closeAlreadyJoined').addEventListener('click', function () {
+                        document.getElementById('alreadyJoinedModal').style.display = "none";
+                    });
         </script>
     </body>
 </html>
