@@ -404,9 +404,57 @@ async function cancelEvent(userID, eventID) {
   }
 }
 
+// DONATION FUNCTION
+async function submitDonation(userID, amount) {
+  try {
+    const donationsRef = collection(db, "Donations");
+    const snapshot = await getDocs(donationsRef);
+
+    // Generate Donation ID
+    let donationID = "D00001";
+    let highestID = 0;
+
+    snapshot.forEach((doc) => {
+      const id = doc.id;
+      const numeric = parseInt(id.substring(1));
+      if (numeric > highestID) highestID = numeric;
+    });
+
+    donationID = "D" + String(highestID + 1).padStart(5, "0");
+
+    // Human-readable timestamp
+    const now = new Date();
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    };
+    const formattedDate = now.toLocaleString("en-US", options);
+
+    // Create donation
+    await setDoc(doc(db, "Donations", donationID), {
+      user_id: userID,
+      amount_donated: parseFloat(amount),
+      timestamp: formattedDate
+    });
+
+    return { success: true, message: "Donation recorded successfully." };
+
+  } catch (error) {
+    console.error("Error processing donation:", error);
+    return { success: false, message: "Failed to record donation." };
+  }
+}
+
+
 /*
 ========================= EXPORTS =================================
 */
+// EXPORT
+export { submitDonation };
 
 // JOIN EVENT EXPORT
 export { joinEvent };

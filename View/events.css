@@ -83,6 +83,17 @@ footer {
     margin: 30px auto;
 }
 
+.donation-container {
+    padding: 30px;
+    margin-top: 120px; /* Adjusted margin-top to compensate for the fixed header */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;  /* Make it more flexible */
+    max-width: 500px;
+    margin: 30px auto;
+}
+
 button {
     padding: 10px;
     background-color: #4CAF50;
