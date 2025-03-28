@@ -1,99 +1,214 @@
-/* General Body Styles */
+/* Home Page Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
     background-color: #f4f4f9;
-    padding-top: 100px; /* Adjusted padding to accommodate the fixed header */
+    line-height: 1.6;
 }
 
+/* Navbar Styles*/
 .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     background-color: #333;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 200;
-    padding: 10px 0;
+    padding: 15px 5%;
+    box-sizing: border-box;
 }
 
-.navbar ul {
+.navbar-logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.navbar-links {
     display: flex;
-    justify-content: center;
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.navbar li {
-    margin: 0 20px;
+.navbar-links li {
+    margin: 0 15px;
 }
 
-.navbar a {
+.navbar-links a {
     text-decoration: none;
     color: white;
     font-size: 16px;
     padding: 8px 16px;
     border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
-.navbar a:hover {
+.navbar-links a:hover {
     background-color: #4CAF50;
 }
 
-header {
-    width: 100%;
-    padding: 20px;
-    background-color: #4CAF50; 
-    color: white;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    padding-top: 60px;
+.navbar-cta {
+    display: flex;
+    gap: 15px;
 }
 
-footer {
-    width: 100%;
-    padding: 20px;
-    background-color: #4CAF50;
+.login-btn {
+    text-decoration: none;
     color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid white;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #4CAF50;
+}
+
+/* Home Section */
+.home-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 5%;
+    background: linear-gradient(135deg, #2C3E50 0%, #4CAF50 100%);
+    color: white;
+    min-height: calc(100vh - 80px);
+}
+
+.home-content {
+    max-width: 1200px;
+    width: 100%;
     text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
+}
+
+.home-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.home-content > p {
+    font-size: 1.2rem;
+    margin-bottom: 50px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .home-container {
-    padding: 20px;
-    margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
 }
 
-.dashboard {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
+.dashboard-section, 
+.quick-access-section {
+    flex: 1;
 }
 
-.quick-access button {
-    width: 100%;
-    padding: 10px;
+.dashboard-card,
+.quick-access-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover,
+.quick-access-card:hover {
+    transform: scale(1.05);
+}
+
+.dashboard-card h2,
+.quick-access-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: white;
+    text-align: left;
+}
+
+.dashboard-stats {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    width: 30%;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.action-btn {
+    display: block;
+    padding: 15px;
     background-color: #4CAF50;
     color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
-.quick-access button:hover {
+.action-btn:hover {
     background-color: #45a049;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .home-container {
+        flex-direction: column;
+    }
+
+    .home-content h1 {
+        font-size: 2rem;
+    }
+
+    .home-content > p {
+        font-size: 1rem;
+    }
+
+    .dashboard-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .stat-item {
+        width: 100%;
+    }
 }

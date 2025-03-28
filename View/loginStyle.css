@@ -1,110 +1,161 @@
+/* General Body Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background: linear-gradient(135deg, #2C3E50 40%, #4CAF50);;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar-like Header */
+header {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #f4f4f9;
-}
-
-header {
     width: 100%;
-    padding: 20px;
-    background-color: #4CAF50; /* Green color for top */
-    color: white;
-    text-align: center;
+    background-color: #333;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
-}
-
-footer {
-    width: 100%;
-    padding: 20px;
-    background-color: #4CAF50; /* Green color for bottom */
+    box-sizing: border-box;
     color: white;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
 }
 
+/* Login Container */
 .login-container {
-    background-color: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    margin: 50px 0;
-    padding-left: 5px;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-label {
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-input[type="text"]{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0 20px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-}
-
-input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-}
-
-.checkbox-label {
-    font-size: 14px;
-    color: #333;
-}
-
-.login-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 4px;
+    max-width: 500px;
+    margin: 150px auto 50px;
+    padding: 40px;
+    background: linear-gradient(135deg, #2C3E50 40%, #4CAF50);
+    border-radius: 10px;
     color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: white;
+    text-align: center;
+}
+
+/* Form Styles */
+#login-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+#email, #password {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: border-color 0.3s ease;
+}
+
+#email:focus, #password:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* Remember Me Checkbox */
+.checkbox-label {
+    display: inline-block;
+    margin-left: 10px;
+    color: white;
+    font-size: 14px;
+}
+
+/* Login Button */
+.login-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 15px 30px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
     font-size: 16px;
+    transition: background-color 0.3s ease;
+    border: none;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .login-btn:hover {
     background-color: #45a049;
 }
 
-.forgot-password {
+/* Forgot Password and Sign Up Links */
+.forgot-password, .signUp {
+    margin-top: 20px;
     text-align: center;
-    margin-top: 10px;
 }
 
-.signUp {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.forgot-password a {
-    color: #4CAF50;
+.forgot-password a, .signUp a {
+    color: white;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password a:hover, .signUp a:hover {
+    color: #4CAF50;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+        margin: 100px auto 50px;
+    }
+
+    #login-form {
+        max-width: 100%;
+    }
 }

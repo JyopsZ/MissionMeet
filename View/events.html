@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - MissionMeet</title>
+    <link rel="stylesheet" href="events.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="navbar-logo">MissionMeet</a>
+        <ul class="navbar-links">
+            <li><a href="Home Page.html">Home</a></li>
+            <li><a href="Events Page.html">Events</a></li>
+            <li><a href="Members Page.html">Members</a></li>
+            <li><a href="Profile Page.html">Profile</a></li>
+        </ul>
+        <div class="navbar-cta">
+            <a href="#" class="login-btn" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <section class="events">
+        <div class="events-container">
+            <h1>Events</h1>
+
+            <div class="event-form">
+                <h2>Add an Event</h2>
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="eventName">Event Name:</label>
+                        <input type="text" id="eventName" name="eventName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDate">Event Date:</label>
+                        <input type="date" id="eventDate" name="eventDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDetails">Event Details:</label>
+                        <textarea id="eventDetails" name="eventDetails" rows="4" required></textarea>
+                    </div>
+
+                    <button type="submit" class="add-event-btn">Add Event</button>
+                </form>
+            </div>
+
+            <div class="events-list">
+                <h2>Upcoming Events</h2>
+                <ul>
+                    <li>Community Volunteer Day: March 25, 2025</li>
+                    <li>Annual Fundraising Gala: April 5, 2025</li>
+                    <li>Environmental Awareness Workshop: April 10, 2025</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+    </footer>
+</body>
+</html>

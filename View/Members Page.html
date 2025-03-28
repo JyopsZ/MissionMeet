@@ -8,44 +8,78 @@
 </head>
 <body>
 
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="profile.html">Profile</a></li>
-            <li><a href="members.html">Members</a></li>
+        <a href="#" class="navbar-logo">MissionMeet</a>
+        <ul class="navbar-links">
+            <li><a href="Home Page.html">Home</a></li>
+            <li><a href="Events Page.html">Events</a></li>
+            <li><a href="Members Page.html">Members</a></li>
+            <li><a href="Profile Page.html">Profile</a></li>
         </ul>
     </nav>
 
-    <header>
-        <h1>Members</h1>
-    </header>
+    <!-- Members Section -->
+    <div class="members-section">
+        <div class="members-content">
+            <h1>Members Management</h1>
+            <p>Manage and organize your team members efficiently</p>
 
-    <div class="members-container">
-        <h2>Add Members</h2>
-        <form action="#" method="POST"> <!-- change # change it base on code-->
-            <label for="memberName">Member Name:</label>
-            <input type="text" id="memberName" name="memberName"><br><br>
+            <div class="members-container">
+                <div class="add-member-section">
+                    <h2>Add New Member</h2>
+                    <form class="member-form">
+                        <div class="form-group">
+                            <label for="memberName">Full Name</label>
+                            <input type="text" id="memberName" name="memberName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberEmail">Email Address</label>
+                            <input type="email" id="memberEmail" name="memberEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberRole">Role</label>
+                            <select id="memberRole" name="memberRole" required>
+                                <option value="">Select Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                                <option value="member">Member</option>
+                                <option value="volunteer">Volunteer</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="add-member-btn">Add Member</button>
+                    </form>
+                </div>
 
-            <label for="memberRole">Member Role:</label>
-            <input type="text" id="memberRole" name="memberRole"><br>
-
-            <button type="submit" class="add-member-btn">Add Member</button>
-        </form>
-
-        <!-- change this into drop down/search-->
-        <h2>Remove Members</h2>
-        <p> to be revised </p>
-        <ul>
-            <li>Member 1</li>
-            <li>Member 2</li>
-            <li>Member 3</li>
-        </ul>
+                <div class="member-list-section">
+                    <h2>Current Members</h2>
+                    <div class="search-container">
+                        <input type="text" id="memberSearch" placeholder="Search members...">
+                    </div>
+                    <ul class="member-list">
+                        <li>
+                            <span class="member-name">John Doe</span>
+                            <span class="member-role">Admin</span>
+                            <button class="remove-btn">Remove</button>
+                        </li>
+                        <li>
+                            <span class="member-name">Jane Smith</span>
+                            <span class="member-role">Manager</span>
+                            <button class="remove-btn">Remove</button>
+                        </li>
+                        <li>
+                            <span class="member-name">Mike Johnson</span>
+                            <span class="member-role">Member</span>
+                            <button class="remove-btn">Remove</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
-        <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+        <p>&copy; 2025 MissionMeet. All rights reserved.</p>
     </footer>
-
 </body>
 </html>

@@ -3,50 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>MissionMeet</title>
     <link rel="stylesheet" href="View/landing-page-style.css">
     <link rel="stylesheet" href="View/spinner.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <ul>
+        <a href="#" class="navbar-logo">MissionMeet</a>
+        <ul class="navbar-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="View/about.html">About</a></li>
             <li><a href="View/services.html">Services</a></li>
             <li><a href="View/contact.html">Contact</a></li>
         </ul>
+        <div class="navbar-cta">
+            <a href="View/Login Page.html" class="login-btn">Log in</a>
+            <a href="View/SignUp Page.html" class="signup-btn">Sign up</a>
+        </div>
     </nav>
 
     <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
-            <h1>Welcome to Mission Meet</h1>
-            <p>Join organizations, explore events, and connect with the community.</p>
-            <div class="cta-btns">
-                <a href="View/Login Page.html" class="cta-btn">Login</a>
-                <a href="View/SignUp Page.html" class="cta-btn">Sign Up</a>
+            <h1>Connect, Explore, Engage</h1>
+            <p>Join organizations, discover events, and build meaningful connections with like-minded individuals in your community.</p>
+            <div class="hero-cta">
+                <a href="VIew/SignUp Page.html" class="cta-btn">Join MissionMeet</a>
+                <a href="View/about.html" class="cta-btn">Learn More</a>
             </div>
         </div>
     </header>
 
+    <!--Featured Section-->
+    <section class="featured-sections">
+        <div class="section-title">
+            <h2>What We Offer</h2>
+        </div>
+        <div class="section-grid">
+            <div class="section-card">
+                <img src="https://placehold.co/300x150" alt="Organizations">
+                <h3>Organizations</h3>
+                <p>Discover and join groups that align with your interests and passions.</p>
+            </div>
+            <div class="section-card">
+                <img src="https://placehold.co/300x150" alt="Events">
+                <h3>Events</h3>
+                <p>Attend local and online events to learn, network, and have fun.</p>
+            </div>
+            <div class="section-card">
+                <img src="https://placehold.co/300x150" alt="Community">
+                <h3>Community</h3>
+                <p>Connect with people who share your hobbies, skills, and goals.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Organizations Section -->
     <section class="organizations">
-        <h2>Featured Organizations</h2>
-
-        <div class="organization-container" id="organization-container">
-            <div class="loader">
+        <div class="section-title">
+            <h2>Featured Organizations</h2>
+        </div>
+        <div class="organization-container">
+            <div class="org-card">
+                <img src="https://placehold.co/300x150" alt="Organization 1">
+                <div class="card-details">
+                    <div class="loader"></div>
+                    <a href="#" class="view-btn">View Organization</a>
+                </div>
+            </div>
+            <div class="org-card">
+                <img src="https://placehold.co/300x150" alt="Organization 2">
+                <div class="card-details">
+                    <div class="loader"></div>
+                    <a href="#" class="view-btn">View Organization</a>
+                </div>
+            </div>
+            <div class="org-card">
+                <img src="https://placehold.co/300x150" alt="Organization 3">
+                <div class="card-details">
+                    <div class="loader"></div>
+                    <a href="#" class="view-btn">View Organization</a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Events Section -->
     <section class="events">
-        <h2>Upcoming Events</h2>
-
-        <div class="event-container" id="event-container">
-            <div class="loader">
+        <div class="section-title">
+            <h2>Upcoming Events</h2>
+        </div>
+        <div class="event-container">
+            <div class="event-card">
+                <img src="https://placehold.co/300x150" alt="Event 1">
+                <div class="card-details">
+                    <div class="loader"></div>
+                    <a href="#" class="view-btn">View Events</a>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="https://placehold.co/300x150" alt="Event 2">
+                <div class="card-details">
+                    <div class="loader"></div>
+                    <a href="#" class="view-btn">View Events</a>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="https://placehold.co/300x150" alt="Event 3">
+                <div class="card-details">
+                    <div class="loader"></div>
+                    <a href="#" class="view-btn">View Events</a>
+                </div>
             </div>
         </div>
     </section>

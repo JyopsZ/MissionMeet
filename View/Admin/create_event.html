@@ -3,46 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Event</title>
+    <title>Create Event - MissionMeet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="admin_ComponentStyle.css">
 </head>
 <body>
-
-    <!-- Navbar -->
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <ul>
+        <a href="#" class="navbar-logo">MissionMeet</a>
+        <ul class="navbar-links">
             <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
-            <li><a href="manage_orgs.html">Manage Orgs</a></li>
+            <li><a href="manage_orgs.html">Manage Organizations</a></li>
             <li><a href="events.html">Manage Events</a></li>
             <li><a href="profile.html">Profile</a></li>
         </ul>
+        <div class="navbar-cta">
+            <a href="#" class="login-btn" onclick="logout()">Logout</a>
+        </div>
     </nav>
 
     <header>
         <h1>Create an Event</h1>
     </header>
+    
+    <section class="create-event-section">
+        <div class="admin-container">
+            <form action="event_created.html" method="POST">
+                <div class="form-group">
+                    <label for="eventName">Event Name</label>
+                    <input type="text" id="eventName" name="eventName" required placeholder="Enter event name">
+                </div>
 
-    <div class="admin-container">
-        <form action="event_created.html" method="POST">
-            <label for="eventName">Event Name:</label>
-            <input type="text" id="eventName" name="eventName" required>
+                <div class="form-group">
+                    <label for="eventDate">Event Date</label>
+                    <input type="date" id="eventDate" name="eventDate" required>
+                </div>
 
-            <label for="eventDate">Event Date:</label>
-            <input type="date" id="eventDate" name="eventDate" required>
+                <div class="form-group">
+                    <label for="eventTime">Event Time</label>
+                    <input type="time" id="eventTime" name="eventTime" required>
+                </div>
 
-            <label for="eventTime">Event Time:</label>
-            <input type="time" id="eventTime" name="eventTime" required>
+                <div class="form-group">
+                    <label for="eventDescription">Event Description</label>
+                    <textarea id="eventDescription" name="eventDescription" required placeholder="Provide a detailed description of the event"></textarea>
+                </div>
 
-            <label for="eventDescription">Event Description:</label>
-            <textarea id="eventDescription" name="eventDescription" required></textarea>
-
-            <button type="submit">Create Event</button>
-        </form>
-    </div>
+                <button type="submit" class="submit-btn">Create Event</button>
+            </form>
+        </div>
+    </section>
 
     <footer>
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
     </footer>
 
+    <script>
+        function logout() {
+            alert('Logout functionality to be implemented');
+        }
+    </script>
 </body>
 </html>

@@ -1,104 +1,175 @@
-
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
     background-color: #f4f4f9;
-    padding-top: 60px; 
+    line-height: 1.6;
 }
 
-header {
-    width: 100%;
-    padding: 20px;
-    background-color: #4CAF50; /* Green color for top */
-    color: white;
-    text-align: center;
-    position: fixed;
-    top: 20px;
-    left: 0;
-    z-index: 100;
-}
-
-footer {
-    width: 100%;
-    padding: 20px;
-    background-color: #4CAF50; /* Green color for bottom */
-    color: white;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-}
-
+/* Navbar Styles*/
 .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     background-color: #333;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 200;
-    padding: 10px 0;
+    padding: 15px 5%;
+    box-sizing: border-box;
 }
 
-.navbar ul {
+.navbar-logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.navbar-links {
     display: flex;
-    justify-content: center;
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.navbar li {
-    margin: 0 20px;
+.navbar-links li {
+    margin: 0 15px;
 }
 
-.navbar a {
+.navbar-links a {
     text-decoration: none;
     color: white;
     font-size: 16px;
     padding: 8px 16px;
     border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
-.navbar a:hover {
+.navbar-links a:hover {
     background-color: #4CAF50;
+}
+
+.navbar-cta {
+    display: flex;
+    gap: 15px;
+}
+
+.login-btn {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid white;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #4CAF50;
+}
+
+.profile-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 5%;
+    background: linear-gradient(135deg, #2C3E50 0%, #4CAF50 100%);
+    min-height: 100vh;
+    color: white;
 }
 
 .profile-container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    margin: 30px auto;
-    padding-left: 5px;
+    max-width: 600px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 50px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-button {
-    padding: 10px;
+.profile-container h1, .profile-container h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-container h1 {
+    font-size: 3rem;
+}
+
+.profile-container h2 {
+    font-size: 2rem;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.update-profile-btn {
+    display: block;
+    width: 100%;
+    padding: 15px 30px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    width: 105%;
+    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
 }
 
-button:hover {
+.update-profile-btn:hover {
     background-color: #45a049;
 }
 
-input[type="text"], input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .profile-container {
+        padding: 30px 15px;
+        margin: 20px 10px;
+    }
+
+    .profile-container h1 {
+        font-size: 2rem;
+    }
+
+    .profile-container h2 {
+        font-size: 1.5rem;
+    }
 }

@@ -16,19 +16,19 @@
         <h1>Admin Sign Up</h1>
         <form action="#" method="POST"> <!-- change # change it base on code-->
             <label for="userName">Name:</label>
-            <input type="text" id="userName"><br>
+            <input type="text" id="userName" name="userName" placeholder="Enter your name" required><br>
 
             <label for="userContact">Contact Number:</label>
-            <input type="text" id="userContact"><br>
+            <input type="text" id="userContact" name="userContact" placeholder="Enter your contact number" required><br>
 
             <label for="userEmail">Email Address:</label>
-            <input type="text" id="userEmail"><br>
+            <input type="email" id="userEmail" name="userEmail" placeholder="Enter your email" required><br>
             
             <label for="userPassword">Password:</label>
-            <input type="password" id="userPassword"><br>
+            <input type="password" id="userPassword" name="userPassword" placeholder="Enter your password" required><br>
             
             <label for="userRePassword">Re-type Password:</label>
-            <input type="password" id="userRePassword"><br>
+            <input type="password" id="userRePassword" name="userRePassword" placeholder="Confirm your password" required><br>
 
             <button type="submit" class="signup-btn">Sign Up</button>
         </form>
