@@ -86,6 +86,47 @@ async function getEvents() {  // READ: retrieve all data from events collection
   return eventsArray;
 }
 
+// Create event (similar to sign up functions)
+async function createEvent(name, details, date, time, image, location) {
+
+  let eventID = "E00001";
+  let highestID = 0;
+
+  const q = await getEvents(collection(db, "Events"));
+
+  for (const doc of q.docs) {
+
+    const docID = doc.id;
+    const numeric = parseInt(docID.substring(1));
+
+    if (numeric > highestID) {
+
+      highestID = numeric;
+    }
+  }
+
+  const newNumeric = highestID + 1;
+  eventID = "E" + newNumeric.toString().padStart(5, "0");
+
+  await setDoc(doc(db, "Events", eventID), {
+
+    event_name: name,
+    event_details: details,
+    event_date: date,
+    event_time: time,
+    image: image,
+    event_location: location,
+    members_joined: []
+  });
+
+  return {
+
+    success: true,
+    message: "Event created successfully",
+    eventID: eventID
+  };
+}
+
 
 /*
 ========================= USER FUNCTIONS =================================
@@ -341,6 +382,7 @@ export { getOrgs };
 
 // EVENT EXPORT
 export { getEvents };
+export { createEvent };
 
 // ADMIN EXPORT
 export { getAdmins };
