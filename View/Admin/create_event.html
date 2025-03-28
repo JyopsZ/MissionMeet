@@ -79,7 +79,9 @@
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
     </footer>
 
-    <script>
+    <script type="module">
+        import { createEvent } from '../../Controller/DB_CRUD.js';
+
         const map = L.map("map");
         map.setView([14.564781621943611, 120.99316669725252], 16);
 
@@ -133,8 +135,6 @@
             }
         });
 
-        import { createEvent } from '../../controllers/eventController.js';
-
         document.addEventListener('submit', async (e) => {
 
             e.preventDefault();
@@ -152,7 +152,7 @@
                 image = imageFile.files[0].name;
             }
 
-            const result = await createEvent(eventName, eventDate, eventTime, eventDescription, eventLocation, image);
+            const result = await createEvent(eventName, eventDescription, eventDate, eventTime, image, eventLocation);
 
             if (result.success) {
                 alert(result.message);

@@ -92,7 +92,7 @@ async function createEvent(name, details, date, time, image, location) {
   let eventID = "E00001";
   let highestID = 0;
 
-  const q = await getEvents(collection(db, "Events"));
+  const q = await getDocs(collection(db, "Events"));
 
   for (const doc of q.docs) {
 
