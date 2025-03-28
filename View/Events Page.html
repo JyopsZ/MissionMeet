@@ -19,7 +19,6 @@
             <h1>Events</h1>
         </header>
 
-        <!-- Events Section -->
         <section class="events">
             <h2>Upcoming Events</h2>
             <div class="event-container" id="event-container">
@@ -36,7 +35,6 @@
                 <p id="eventDate"></p>
                 <button id="joinEventBtn">Join Event</button>
                 <button id="cancelBtn">Cancel</button>
-
             </div>
         </div>
 
@@ -49,112 +47,138 @@
             </div>
         </div>
 
+        <!-- Success Modal -->
+        <div id="successModal" style="display: none;">
+            <div class="modal-content">
+                <p>You have successfully joined the event!</p>
+                <button id="closeSuccess">OK</button>
+            </div>
+        </div>
+
+        <!-- Already Joined Modal -->
+        <div id="alreadyJoinedModal" style="display: none;">
+            <div class="modal-content">
+                <p>You have already joined this event.</p>
+                <button id="closeAlreadyJoined">OK</button>
+            </div>
+        </div>
+
         <footer>
             <p>&copy; 2025 Mission Meet. All rights reserved.</p>
         </footer>
 
         <script type="module">
-                
-                import { getEvents, joinEvent } from "../Controller/DB_CRUD.js";
+            import { getEvents, joinEvent } from "../Controller/DB_CRUD.js";
 
-                let eventsList = [];
-                // Fetch and display events when page loads
-                document.addEventListener('DOMContentLoaded', async () => {
-                    eventsList = await getEvents();
-                    displayEvents(eventsList);
+            let eventsList = [];
+
+            document.addEventListener('DOMContentLoaded', async () => {
+                eventsList = await getEvents();
+                displayEvents(eventsList);
+            });
+
+            function displayEvents(events) {
+                const eventsContainer = document.getElementById('event-container');
+                const loader = document.querySelector('.loader');
+                loader.style.display = 'none';
+
+                if (events.length === 0) {
+                    eventsContainer.innerHTML = '<h3>No events found</h3>';
+                    return;
+                }
+
+                eventsContainer.innerHTML = '';
+
+                events.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'event-subcontainer';
+                    eventElement.innerHTML = `
+                        <h3>${event.name}</h3>
+                        <p>${event.details}</p>
+                        <button class="event-btn" data-event-id="${event.eventID}">View Event</button>
+                    `;
+                    eventsContainer.appendChild(eventElement);
                 });
-            
-                // Display Events on Page
-                function displayEvents(events) {
-                    const eventsContainer = document.getElementById('event-container');
-                    const loader = document.querySelector('.loader');
-                    loader.style.display = 'none';
 
-                    if (events.length === 0) {
-                        eventsContainer.innerHTML = '<h3>No events found</h3>';
+                document.querySelectorAll('.event-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const eventId = btn.getAttribute('data-event-id');
+                        openEventModal(eventId);
+                    });
+                });
+            }
+
+            function getEventById(eventId) {
+                return eventsList.find(event => String(event.eventID) === String(eventId));
+            }
+
+            function openEventModal(eventId) {
+                const event = getEventById(eventId);
+                const modal = document.getElementById('eventModal');
+                const title = document.getElementById('eventTitle');
+                const details = document.getElementById('eventDetails');
+                const date = document.getElementById('eventDate');
+                const joinBtn = document.getElementById('joinEventBtn');
+                const cancelBtn = document.getElementById('cancelBtn');
+
+                title.textContent = event.name;
+                details.textContent = event.details;
+                date.textContent = event.date;
+
+                modal.style.display = "block";
+
+                joinBtn.onclick = function () {
+                    openConfirmJoinModal(eventId);
+                };
+
+                cancelBtn.onclick = function () {
+                    modal.style.display = "none";
+                };
+            }
+
+            document.getElementById('closeEventModal').addEventListener('click', function () {
+                document.getElementById('eventModal').style.display = "none";
+            });
+
+            function openConfirmJoinModal(eventId) {
+                const confirmModal = document.getElementById('confirmModal');
+                const confirmJoin = document.getElementById('confirmJoin');
+                const cancelJoin = document.getElementById('cancelJoin');
+
+                confirmModal.style.display = "block";
+
+                confirmJoin.onclick = async function () {
+                    confirmModal.style.display = "none";
+
+                    const userID = localStorage.getItem('userID');
+                    if (!userID) {
+                        alert("User not logged in.");
                         return;
                     }
 
-                    eventsContainer.innerHTML = '';
+                    const result = await joinEvent(userID, eventId);
 
-                    events.forEach(event => {
-                        const eventElement = document.createElement('div');
-                        eventElement.className = 'event-subcontainer';
-                        eventElement.innerHTML = `
-                            <h3>${event.name}</h3>
-                            <p>${event.details}</p>
-                            <button class="event-btn" data-event-id="${event.eventID}">View Event</button>
-                        `;
-                        eventsContainer.appendChild(eventElement);
-                    });
+                    if (result.success) {
+                        document.getElementById('eventModal').style.display = "none";
+                        document.getElementById('successModal').style.display = "block";
+                    } else {
+                        document.getElementById('eventModal').style.display = "none";
+                        document.getElementById('alreadyJoinedModal').style.display = "block";
+                    }
+                };
 
-                    document.querySelectorAll('.event-btn').forEach(btn => {
-                        btn.addEventListener('click', () => {
-                            const eventId = btn.getAttribute('data-event-id');
-                            openEventModal(eventId);
-                        });
-                    });
-                }
-                function getEventById(eventId) {
-                    return eventsList.find(event => String(event.eventID) === String(eventId));
-                }
-                            
-                function openEventModal(eventId) {
-                    const event = getEventById(eventId);
-                    const modal = document.getElementById('eventModal');
-                    const title = document.getElementById('eventTitle');
-                    const details = document.getElementById('eventDetails');
-                    const date = document.getElementById('eventDate');
-                    const joinBtn = document.getElementById('joinEventBtn');
-                    const cancelBtn = document.getElementById('cancelBtn');
-            
-                    title.textContent = event.name;
-                    details.textContent = event.details;
-                    date.textContent = event.date;
-            
-                    modal.style.display = "block";
-            
-                    joinBtn.onclick = function () {
-                        openConfirmJoinModal(eventId);
-                    };
-            
-                    cancelBtn.onclick = function () {
-                        modal.style.display = "none";
-                    };
-                }
-            
-                document.getElementById('closeEventModal').addEventListener('click', function () {
-                    document.getElementById('eventModal').style.display = "none";
-                });
-                
-                function openConfirmJoinModal(eventId) {
-                    const confirmModal = document.getElementById('confirmModal');
-                    const confirmJoin = document.getElementById('confirmJoin');
-                    const cancelJoin = document.getElementById('cancelJoin');
-            
-                    confirmModal.style.display = "block";
-            
-                    confirmJoin.onclick = async function () {
-                        confirmModal.style.display = "none";
-            
-                        const userID = localStorage.getItem('userID');
-                        if (!userID) {
-                            alert("User not logged in.");
-                            return;
-                        }
-            
-                        const result = await joinEvent(userID, eventId);
-                        alert(result.message);
-            
-                        if (result.success) {
-                            document.getElementById('eventModal').style.display = "none";
-                        }
-                    };
-            
-                    cancelJoin.onclick = function () {
-                        confirmModal.style.display = "none";
-                    };
-                }
+                cancelJoin.onclick = function () {
+                    confirmModal.style.display = "none";
+                };
+            }
+
+            document.getElementById('closeSuccess').addEventListener('click', function () {
+                document.getElementById('successModal').style.display = "none";
+            });
+
+            document.getElementById('closeAlreadyJoined').addEventListener('click', function () {
+                document.getElementById('alreadyJoinedModal').style.display = "none";
+            });
         </script>
     </body>
 </html>
