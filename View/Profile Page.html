@@ -6,40 +6,47 @@
     <title>Profile</title>
     <link rel="stylesheet" href="profile.css">
 </head>
-<body>
+    <body>
 
-    <nav class="navbar">
-        <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="profile.html">Profile</a></li>
-            <li><a href="members.html">Members</a></li>
-        </ul>
-    </nav>
+        <nav class="navbar">
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="Events Page.html">Events</a></li>
+                <li><a href="Profile Page.html">Profile</a></li>
+                <li><a href="donate page.html">Donate</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
 
-    <header>
-        <h1>Profile</h1>
-    </header>
+        <header>
+            <h1>Profile</h1>
+        </header>
 
-    <div class="profile-container">
-        <h2>Edit Profile</h2>
-        <form action="#" method="POST"> <!-- change # change it base on code-->
-            <label for="orgName">Organization's Name:</label>
-            <input type="text" id="orgName" name="orgName"><br>
+        <div class="profile-container">
+            <h2>Edit Profile</h2>
+            <form action="#" method="POST"> <!-- change # change it base on code-->
+                <label for="orgName">Organization's Name:</label>
+                <input type="text" id="orgName" name="orgName"><br>
 
-            <label for="orgAddress">Organization's Address:</label>
-            <input type="text" id="orgAddress" name="orgAddress"><br>
-            
-            <label for="orgEmail">Organization's Email:</label>
-            <input type="email" id="orgEmail" name="orgEmail"><br>
-            
-            <button type="submit" class="update-profile-btn">Update Profile</button>
-        </form>
-    </div>
+                <label for="orgAddress">Organization's Address:</label>
+                <input type="text" id="orgAddress" name="orgAddress"><br>
+                
+                <label for="orgEmail">Organization's Email:</label>
+                <input type="email" id="orgEmail" name="orgEmail"><br>
+                
+                <button type="submit" class="update-profile-btn">Update Profile</button>
+            </form>
+        </div>
 
-    <footer>
-        <p>&copy; 2025 Mission Meet. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+        </footer>
 
-</body>
+        <script>
+            function logout() {
+                localStorage.clear(); 
+                window.location.href = "../index.html"; 
+            }
+        </script>
+    </body>
 </html>

@@ -12,6 +12,8 @@
             <li><a href="Home Page.html">Home</a></li>
             <li><a href="Events Page.html">Events</a></li>
             <li><a href="Profile Page.html">Profile</a></li>
+            <li><a href="donate page.html">Donate</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
             </ul>
         </nav>
 
@@ -46,6 +48,13 @@
             </div>
         </div>
 
+        <script>
+            function logout() {
+                localStorage.clear(); 
+                window.location.href = "../index.html"; 
+            }
+        </script>
+        
             <script type="module">
                 import { getEvents, getUsers, cancelEvent } from "../Controller/DB_CRUD.js";
 
