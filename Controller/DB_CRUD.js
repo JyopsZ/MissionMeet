@@ -165,8 +165,10 @@ async function getEvents() {  // READ: retrieve all data from events collection
       eventData.event_name,
       eventData.event_details,
       eventData.event_date,
+      eventData.event_time,
       eventData.image,
-      eventData.members_joined
+      eventData.location,
+      eventData.members
     );
 
     eventsArray.push(event);

@@ -39,34 +39,49 @@
 
     <div class="admin-container">
         <form id="orgForm">
-            <label for="orgName">Organization Name:</label>
-            <input type="text" id="orgName" name="orgName" required>
 
-            <label for="orgDescription">Organization Description:</label>
-            <textarea id="orgDescription" name="orgDescription" required></textarea>
+            <div class="form-group">
+                <label for="orgName">Organization Name:</label>
+                <input type="text" id="orgName" name="orgName" required>
+            </div>
 
-            <label for="orgAddress">Organization Address:</label>
-            <input type="text" id="orgAddress" name="orgAddress">
+            <div class="form-group">
+                <label for="orgDescription">Organization Description:</label>
+                <textarea id="orgDescription" name="orgDescription" required></textarea>
+            </div>
 
-            <label for="orgEmail">Organization Email:</label>
-            <input type="text" id="orgEmail" name="orgEmail">
+            <div class="form-group">
+                <label for="orgAddress">Organization Address:</label>
+                <input type="text" id="orgAddress" name="orgAddress">
+            </div>
 
-            <label for="orgContact">Organization Contact:</label>
-            <input type="text" id="orgContact" name="orgContact">
+            <div class="form-group">
+                <label for="orgEmail">Organization Email:</label>
+                <input type="text" id="orgEmail" name="orgEmail">
+            </div>
 
-            <label for="orgLogo">Organization Logo:</label>
-            <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
-            <span id="selectedImageName">No image selected</span>
-            <input type="hidden" id="displayLogoName" name="displayLogoName"><br><br><br>
+            <div class="form-group">
+                <label for="orgContact">Organization Contact:</label>
+                <input type="text" id="orgContact" name="orgContact">
+            </div>
 
-            <label for="subscriptionPlan">Choose Subscription Plan:</label>
-            <select id="subscriptionPlan" name="subscriptionPlan">
-                <option value="basic">Basic</option>
-                <option value="premium">Premium</option>
-                <option value="enterprise">Enterprise</option>
-            </select>
+            <div class="form-group">
+                <label for="orgLogo">Organization Logo:</label><br><br>
+                <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
+                <span id="selectedImageName">No image selected</span>
+                <input type="hidden" id="displayLogoName" name="displayLogoName"><br><br><br>
+            </div>
 
-            <button type="submit">Create Organization</button>
+            <div class="form-group">
+                <label for="subscriptionPlan">Choose Subscription Plan:</label>
+                <select id="subscriptionPlan" name="subscriptionPlan">
+                    <option value="basic">Basic</option>
+                    <option value="premium">Premium</option>
+                    <option value="enterprise">Enterprise</option>
+                </select>
+
+                <button type="submit">Create Organization</button>
+            </div>
         </form>
     </div>
 
@@ -160,6 +175,13 @@
                 alert("Please select an image.");
             }
         });
+    </script>
+
+    <script>
+        function logout() {
+            localStorage.clear(); 
+            window.location.href = "../../index.html"; 
+        }
     </script>
 
 </body>

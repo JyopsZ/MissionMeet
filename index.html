@@ -123,7 +123,7 @@
                 const orgElement = document.createElement('div');
                 orgElement.className = 'org-card';
                 orgElement.innerHTML = `
-                    <img src="View/Images/${org.getLogo()}" alt="${org.getName()}" onerror="this.src='https://placehold.co/300x150'">
+                    <img src="View/Images/${org.getLogo()}" alt="${org.getName()}" onerror="this.src='https://placehold.co/300x150'" class="logo-image">
                     <div class="card-details">
                         <h3>${org.getName()}</h3>
                         <p>${org.getDescription()}</p>
@@ -148,13 +148,14 @@
                 const eventElement = document.createElement('div');
                 eventElement.className = 'event-card';
                 eventElement.innerHTML = `
-                    <img src="View/Images/${event.getImage()}" alt="${event.getName()}" onerror="this.src='https://placehold.co/300x150'">
+                    <img src="View/Images/${event.getImage()}" alt="${event.getName()}" onerror="this.src='https://placehold.co/300x150'" class="event-image">
                     <div class="card-details">
                         <h3>${event.getName()}</h3>
                         <p>${event.getDetails()}</p>
                         <a href="#" class="view-btn">View Event</a>
                     </div>
                 `;
+                console.log(event.getImage());
                 eventsContainer.appendChild(eventElement);
             });
         }

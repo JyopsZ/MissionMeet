@@ -1,5 +1,5 @@
 export class Event {
-    constructor(eventID, name, details, date, time, image, location) {
+    constructor(eventID, name, details, date, time, image, location, members = []) {
         this.eventID = eventID;
         this.name = name;
         this.details = details;
@@ -7,7 +7,7 @@ export class Event {
         this.time = time;
         this.image = image;
         this.location = location;
-        this.members = [];
+        this.members = members;
     }
 
     getEventID() {

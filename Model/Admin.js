@@ -1,5 +1,5 @@
 export class Admin {
-    constructor(adminID, name, email, password, contact_no, org_affiliation) {
+    constructor(adminID, name, email, password, contact_no, org_affiliation = []) {
         this.adminID = adminID;
         this.name = name;
         this.email = email;
