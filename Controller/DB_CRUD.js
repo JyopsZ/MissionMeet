@@ -56,6 +56,54 @@ async function getOrgs() {  // READ: retrieve all data from orgs collection
   return orgsArray;
 }
 
+async function createOrg(orgName, orgDescription, orgAddress, orgEmail, orgContact, orgLogo, orgSubPlan, adminID) {
+  try {
+
+    const orgs = await getOrgs();
+    let orgID = "ORG00001"; // Default org ID
+    
+    if (orgs.length > 0) {
+      let highestID = 0;
+      orgs.forEach(org => {
+        const numeric = parseInt(org.getOrgID().replace("ORG", ""));
+        if (numeric > highestID) {
+          highestID = numeric;
+        }
+      });
+      const newNumeric = highestID + 1;
+      orgID = "O" + newNumeric.toString().padStart(5, "0");
+    }
+
+    await setDoc(doc(db, "Orgs", orgID), {
+      org_name: orgName,
+      org_description: orgDescription,
+      org_address: orgAddress || "",
+      org_email: orgEmail || "",
+      org_contact: orgContact || "",
+      org_logo: orgLogo || "",
+      org_subplan: orgSubPlan,
+      admins: [adminID], // This should Aad the creating admin as first admin
+      events: []
+    });
+
+    // Update the admin's org_affiliation para admin = org
+    await setDoc(doc(db, "Admins", adminID), {
+      org_affiliation: orgID
+    }, { merge: true });
+
+    return {
+      success: true,
+      orgID: orgID
+    };
+  } catch (error) {
+    console.error("Error creating organization:", error);
+    return {
+      success: false,
+      message: "Error creating organization"
+    };
+  }
+}
+
 /*
 ========================= EVENT FUNCTIONS =================================
 */
@@ -338,6 +386,7 @@ export { getUsers };
 
 // ORG EXPORT
 export { getOrgs };
+export { createOrg };
 
 // EVENT EXPORT
 export { getEvents };

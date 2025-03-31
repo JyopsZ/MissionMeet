@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Organization Profile</title>
+  <link rel="stylesheet" href="../events.css" />
+</head>
+    <body>
+        <nav class="navbar">
+            <ul>
+                <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
+                <li><a href="manage_orgs.html">Manage Org</a></li>
+                <li><a href="events.html">Manage Events</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+    <header>
+        <h1>Organization Profile</h1>
+    </header>
+
+    <main style="margin-top: 120px;">
+        <div class="events-container" id="orgProfile">
+        <p><strong>Name:</strong> <span id="org_name"></span></p>
+        <p><strong>Description:</strong> <span id="org_description"></span></p>
+        <p><strong>Email:</strong> <span id="org_email"></span></p>
+        <p><strong>Contact:</strong> <span id="org_contact"></span></p>
+        <p><strong>Address:</strong> <span id="org_address"></span></p>
+        <p><strong>Subplan:</strong> <span id="org_subplan"></span></p>
+        <p><strong>Logo:</strong> <span id="org_logo"></span></p>
+        <button onclick="location.href='org-edit.html'">Edit</button>
+        </div>
+    </main>
+
+    
+        <footer>
+            <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+        </footer>
+    </body>
+</html>

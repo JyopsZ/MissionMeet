@@ -23,12 +23,24 @@
     </header>
 
     <div class="admin-container">
-        <form action="organization_created.html" method="POST">
+        <form id="orgForm">
             <label for="orgName">Organization Name:</label>
             <input type="text" id="orgName" name="orgName" required>
 
             <label for="orgDescription">Organization Description:</label>
             <textarea id="orgDescription" name="orgDescription" required></textarea>
+
+            <label for="orgAddress">Organization Address:</label>
+            <input type="text" id="orgAddress" name="orgAddress">
+
+            <label for="orgEmail">Organization Email:</label>
+            <input type="text" id="orgEmail" name="orgEmail">
+
+            <label for="orgContact">Organization Contact:</label>
+            <input type="text" id="orgContact" name="orgContact">
+
+            <label for="orgLogo">Organization Logo:</label>
+            <input type="file" id="orgLogo" name="orgLogo" accept="image/*" required>
 
             <label for="subscriptionPlan">Choose Subscription Plan:</label>
             <select id="subscriptionPlan" name="subscriptionPlan">
@@ -44,6 +56,68 @@
     <footer>
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
     </footer>
+
+    <script type="module">
+        import { createOrg } from "../../Controller/DB_CRUD.js";
+        
+        document.getElementById('orgForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const adminID = localStorage.getItem('userID');
+            const userType = localStorage.getItem('userType');
+            
+            if (userType !== 'admin') {
+                alert('Only admins can create organizations!');
+                return;
+            }
+            
+            const orgName = document.getElementById('orgName').value;
+            const orgDescription = document.getElementById('orgDescription').value;
+            const orgAddress = document.getElementById('orgAddress').value;
+            const orgEmail = document.getElementById('orgEmail').value;
+            const orgContact = document.getElementById('orgContact').value;
+            const orgSubPlan = document.getElementById('subscriptionPlan').value;
+            const logoInput = document.getElementById('orgLogo');
+            
+            // Handle file upload
+            let orgLogo = null;
+            if (logoInput.files.length > 0) {
+                const file = logoInput.files[0];
+                orgLogo = file.name;
+                
+                try {
+                    // Save file to local directory
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const fileContent = e.target.result;
+                        
+                        // Create a download link and trigger it programmatically
+                        const a = document.createElement('a');
+                        a.href = fileContent;
+                        a.download = `C:\\Lance Files\\DLSU College\\ITISDEV\\MissionMeet-main\\View\\Images\\${file.name}`; //eto palitan
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
+                    reader.readAsDataURL(file);
+                } catch (error) {
+                    console.error("Error saving file locally:", error);
+                    alert("Error saving logo file. Organization will be created without logo.");
+                }
+            }
+    
+            const result = await createOrg(
+                orgName, orgDescription, orgAddress, orgEmail, orgContact, orgLogo, orgSubPlan, adminID
+            );
+            
+            if (result.success) {
+                alert('Organization created successfully!');
+                window.location.href = 'organization_created.html';
+            } else {
+                alert('Error creating organization: ' + (result.message || 'Unknown error'));
+            }
+        });
+    </script>
 
 </body>
 </html>

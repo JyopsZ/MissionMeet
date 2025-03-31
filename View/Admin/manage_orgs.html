@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Organization</title>
+  <link rel="stylesheet" href="../events.css" />
+</head>
+    <body>
+        <nav class="navbar">
+            <ul>
+                <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
+                <li><a href="manage_orgs.html">Manage Org</a></li>
+                <li><a href="events.html">Manage Events</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <h1>Edit Organization Info</h1>
+        </header>
+
+        <main style="margin-top: 120px;">
+            <div class="events-container">
+            <form id="editOrgForm">
+                <input type="text" id="org_name" placeholder="Name" required />
+                <textarea id="org_description" placeholder="Description" required></textarea>
+                <input type="email" id="org_email" placeholder="Email" required />
+                <input type="text" id="org_contact" placeholder="Contact" required />
+                <input type="text" id="org_address" placeholder="Address" required />
+                <input type="text" id="org_subplan" placeholder="Subplan" required />
+                <input type="file" id="org_logo" />
+                <button type="submit">Save Changes</button>
+            </form>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+        </footer>
+    </body>
+</html>
