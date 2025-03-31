@@ -3,49 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Home | MissionMeet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <ul>
+        <a href="#" class="navbar-logo">MissionMeet</a>
+        <ul class="navbar-links">
             <li><a href="Home Page.html">Home</a></li>
             <li><a href="Events Page.html">Events</a></li>
+            <li><a href="Members Page.html">Members</a></li>
             <li><a href="Profile Page.html">Profile</a></li>
             <li><a href="donate page.html">Donate</a></li>
             <li><a href="#" onclick="logout()">Logout</a></li>
             <!-- <li><a href="members.html">Members</a></li> -->
         </ul>
-    </nav>
-    
-    <header>
-        <h1>Welcome, Organization Name</h1>
-    </header>
-
-    <div class="home-container">
-        <div class="dashboard">
-            <h2>Dashboard</h2>
-            <p>Upcoming Events: 3</p>
-            <p>Recent Activities: 5</p>
+        <div class="navbar-cta">
+            <a href="#" class="login-btn" onclick="logout()">Logout</a>
         </div>
+    </nav>
 
-        <div class="quick-access">
-            <button onclick="window.location.href='Events Page.html'">View Events</button>
-            <!--  <button onclick="window.location.href='profile.html'">View Profile</button> -->
-            <!-- <button onclick="window.location.href='members.html'">Manage Members</button> -->
+    <!-- Home Section -->
+    <div class="home-section">
+        <div class="home-content">
+            <h1>Welcome, Organization Name</h1>
+            <p>Your central hub for managing missions and activities</p>
+
+            <div class="home-container">
+                <div class="dashboard-section">
+                    <div class="dashboard-card">
+                        <h2>Dashboard Overview</h2>
+                        <div class="dashboard-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Upcoming Events</span>
+                                <span class="stat-value">3</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Recent Activities</span>
+                                <span class="stat-value">5</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Active Members</span>
+                                <span class="stat-value">42</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-access-section">
+                    <div class="quick-access-card">
+                        <h2>Quick Actions</h2>
+                        <div class="action-buttons">
+                            <a href="Events Page.html" class="action-btn">
+                                <span>View Events</span>
+                            </a>
+                            <a href="Members Page.html" class="action-btn">
+                                <span>View Members</span>
+                            </a>
+                            <a href="Profile Page.html" class="action-btn">
+                                <span>Edit Profile</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+        <p>&copy; 2025 MissionMeet. All rights reserved.</p>
     </footer>
 
     <script>
-        function logout() {
-            localStorage.clear(); 
-            window.location.href = "../index.html"; 
-        }
+    function logout() {
+        localStorage.clear(); 
+        window.location.href = "../index.html"; 
+    }
     </script>
-
 </body>
 </html>
