@@ -8,7 +8,7 @@ body {
     flex-direction: column;
     height: 100vh;
     background-color: #f4f4f9;
-    padding-top: 100px;
+    padding-top: 160px;
 }
 
 .navbar {
@@ -63,6 +63,7 @@ header {
     max-width: 800px;
     padding-bottom: 80px;
     align-self: center;
+    margin-top: 180px;
 }
 
 form {

@@ -56,6 +56,96 @@ async function getOrgs() {  // READ: retrieve all data from orgs collection
   return orgsArray;
 }
 
+async function getAdminOrg(adminID) {
+  try {
+    // Get the admin's data
+    const admins = await getAdmins();
+    const admin = admins.find(a => a.getAdminID() === adminID);
+    
+    if (!admin) {
+      return { success: false, message: "Admin not found" };
+    }
+
+    const orgID = admin.getOrgAffiliation();
+    if (!orgID) {
+      return { success: false, message: "Admin has no organization affiliation" };
+    }
+
+    // Get the organization data
+    const orgs = await getOrgs();
+    const org = orgs.find(o => o.getOrgID() === orgID);
+    
+    if (!org) {
+      return { success: false, message: "Organization not found" };
+    }
+
+    return {
+      success: true,
+      org: {
+        id: org.getOrgID(),
+        name: org.getName(),
+        description: org.getDescription(),
+        address: org.getAddress(),
+        email: org.getEmail(),
+        contact: org.getContact(),
+        logo: org.getLogo(),
+        subPlan: org.getSubPlan()
+      }
+    };
+  } catch (error) {
+    console.error("Error getting admin's organization:", error);
+    return { success: false, message: "Error getting organization information" };
+  }
+}
+
+async function createOrg(orgName, orgDescription, orgAddress, orgEmail, orgContact, orgLogo, orgSubPlan, adminID) {
+  try {
+
+    const orgs = await getOrgs();
+    let orgID = "O00001"; // Default org ID
+    
+    if (orgs.length > 0) {
+      let highestID = 0;
+      orgs.forEach(org => {
+        const numeric = parseInt(org.getOrgID().replace("O", ""));
+        if (numeric > highestID) {
+          highestID = numeric;
+        }
+      });
+      const newNumeric = highestID + 1;
+      orgID = "O" + newNumeric.toString().padStart(5, "0");
+    }
+
+    await setDoc(doc(db, "Orgs", orgID), {
+      org_name: orgName,
+      org_description: orgDescription,
+      org_address: orgAddress || "",
+      org_email: orgEmail || "",
+      org_contact: orgContact || "",
+      org_logo: orgLogo || "",
+      org_subplan: orgSubPlan,
+      admins: [adminID], // This should Aad the creating admin as first admin
+      events: []
+    });
+
+    // Update the admin's org_affiliation para admin = org
+    await setDoc(doc(db, "Admins", adminID), {
+      org_affiliation: orgID
+    }, { merge: true });
+
+    return {
+      success: true,
+      orgID: orgID
+    };
+  } catch (error) {
+    console.error("Error creating organization:", error);
+    return {
+      success: false,
+      message: "Error creating organization"
+    };
+  }
+}
+
 /*
 ========================= EVENT FUNCTIONS =================================
 */
@@ -236,7 +326,9 @@ async function verifyAdminLogin(email, password) {
         success: true,
         message: "Login successful",
         userType: "admin",
-        userID: doc.id
+        userID: doc.id,
+        name: adminData.name,
+        email: adminData.email
       };
     }
   }
@@ -510,6 +602,8 @@ export { getUsers };
 
 // ORG EXPORT
 export { getOrgs };
+export { getAdminOrg };
+export { createOrg };
 
 // EVENT EXPORT
 export { getEvents };
