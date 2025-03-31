@@ -66,23 +66,9 @@
         <div class="section-title">
             <h2>Featured Organizations</h2>
         </div>
-        <div class="organization-container">
+        <div id="organization-container" class="organization-container">
             <div class="org-card">
                 <img src="https://placehold.co/300x150" alt="Organization 1">
-                <div class="card-details">
-                    <div class="loader"></div>
-                    <a href="#" class="view-btn">View Organization</a>
-                </div>
-            </div>
-            <div class="org-card">
-                <img src="https://placehold.co/300x150" alt="Organization 2">
-                <div class="card-details">
-                    <div class="loader"></div>
-                    <a href="#" class="view-btn">View Organization</a>
-                </div>
-            </div>
-            <div class="org-card">
-                <img src="https://placehold.co/300x150" alt="Organization 3">
                 <div class="card-details">
                     <div class="loader"></div>
                     <a href="#" class="view-btn">View Organization</a>
@@ -96,26 +82,11 @@
         <div class="section-title">
             <h2>Upcoming Events</h2>
         </div>
-        <div class="event-container">
+        <div id="event-container" class="event-container">
             <div class="event-card">
                 <img src="https://placehold.co/300x150" alt="Event 1">
                 <div class="card-details">
                     <div class="loader"></div>
-                    <a href="#" class="view-btn">View Events</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="https://placehold.co/300x150" alt="Event 2">
-                <div class="card-details">
-                    <div class="loader"></div>
-                    <a href="#" class="view-btn">View Events</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="https://placehold.co/300x150" alt="Event 3">
-                <div class="card-details">
-                    <div class="loader"></div>
-                    <a href="#" class="view-btn">View Events</a>
                 </div>
             </div>
         </div>
@@ -127,13 +98,9 @@
     </footer>
 
     <script type="module">
-
-        import { getUsers } from "./Controller/DB_CRUD.js";
-        import { getOrgs } from "./Controller/DB_CRUD.js";
-        import { getEvents } from "./Controller/DB_CRUD.js";
+        import { getUsers, getOrgs, getEvents } from "./Controller/DB_CRUD.js";
 
         document.addEventListener('DOMContentLoaded', async () => {
-
             const orgs = await getOrgs();
             displayOrgs(orgs);
 
@@ -141,11 +108,9 @@
             displayEvents(events);
         });
         
-
         function displayOrgs(orgs) {
-            
             const orgsContainer = document.getElementById('organization-container');
-
+            
             if (orgs.length === 0) {
                 orgsContainer.innerHTML = '<h3>No organizations found</h3>';
                 return;
@@ -156,18 +121,20 @@
 
             displayedOrgs.forEach(org => {
                 const orgElement = document.createElement('div');
-                orgElement.className = 'organization-subcontainer';
+                orgElement.className = 'org-card';
                 orgElement.innerHTML = `
-                    <h3>${org.getName()}</h3>
-                    <img src="View/Images/${org.getLogo()}" class="org-logo">
-                    <p>${org.getDescription()}</p>
+                    <img src="View/Images/${org.getLogo()}" alt="${org.getName()}" onerror="this.src='https://placehold.co/300x150'">
+                    <div class="card-details">
+                        <h3>${org.getName()}</h3>
+                        <p>${org.getDescription()}</p>
+                        <a href="#" class="view-btn">View Organization</a>
+                    </div>
                 `;
                 orgsContainer.appendChild(orgElement);
             });
         }
-
+        
         function displayEvents(events) {
-
             const eventsContainer = document.getElementById('event-container');
 
             if (events.length === 0) {
@@ -179,11 +146,14 @@
 
             events.forEach(event => {
                 const eventElement = document.createElement('div');
-                eventElement.className = 'event-subcontainer';
+                eventElement.className = 'event-card';
                 eventElement.innerHTML = `
-                    <h3>${event.getName()}</h3>
-                    <p>${event.getDetails()}</p>
-                    <button class="event-btn">View Details</button>
+                    <img src="View/Images/${event.getImage()}" alt="${event.getName()}" onerror="this.src='https://placehold.co/300x150'">
+                    <div class="card-details">
+                        <h3>${event.getName()}</h3>
+                        <p>${event.getDetails()}</p>
+                        <a href="#" class="view-btn">View Event</a>
+                    </div>
                 `;
                 eventsContainer.appendChild(eventElement);
             });

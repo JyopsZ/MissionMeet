@@ -51,7 +51,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const adminID = localStorage.getItem('userID');
             if (adminID) {
-                const adminiddisplay = document.querySelector('.options-container h3');
+                const adminiddisplay = document.querySelector('.admin-container h3');
                 adminiddisplay.textContent = `Admin ID: ${adminID}`;
             }
         });
