@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile</title>
+  <link rel="stylesheet" href="profile.css" />
+</head>
+    <body>
+        <nav class="navbar">
+            <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="Events Page.html">Events</a></li>
+            <li><a href="Profile-Page.html">Profile</a></li>
+            <li><a href="donate page.html">Donate</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <h1>User Profile</h1>
+        </header>
+
+        <div class="profile-container" style="max-width: 500px; text-align: center;">
+            <h2>My Info</h2>
+            <p><strong>Name:</strong> <span id="userName"></span></p>
+            <p><strong>Email:</strong> <span id="userEmail"></span></p>
+            <p><strong>Contact Number:</strong> <span id="userContact"></span></p>
+            <button onclick="location.href='edit-profile.html'" style="margin-top: 20px;">Edit Profile</button>
+            <button onclick="location.href='joined-events.html'" style="margin-top: 20px;">View Joined Events</button>
+        </div>
+
+
+        <footer>
+            <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+        </footer>
+
+        <script>
+            function logout() {
+                localStorage.clear(); 
+                window.location.href = "../index.html"; 
+            }
+        </script>
+
+        <script type="module">
+            import { getUsers } from "../Controller/DB_CRUD.js";
+          
+            document.addEventListener("DOMContentLoaded", async () => {
+              const userID = localStorage.getItem("userID");
+          
+              if (!userID) {
+                alert("User not logged in.");
+                return;
+              }
+          
+              const users = await getUsers();
+              const user = users.find(u => u.getUserID() === userID);
+          
+              if (!user) {
+                alert("User not found.");
+                return;
+              }
+        
+              document.getElementById("userName").textContent = user.getName();
+              document.getElementById("userEmail").textContent = user.getEmail();
+              document.getElementById("userContact").textContent = user.getContact();
+            });
+          
+            function logout() {
+              localStorage.clear();
+              window.location.href = "../index.html";
+            }
+          </script>          
+    </body>
+</html>
