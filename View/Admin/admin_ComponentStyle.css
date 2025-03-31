@@ -185,6 +185,14 @@ header h1::after {
     transform: translateY(-2px);
 }
 
+.admin-container button.image-select-btn  {
+
+    background-color: #4CAF50;
+    color: white;
+    width: 40%;
+    margin-right: 15px;
+}
+
 /* Footer Styles */
 #bottom-footer,
 footer {

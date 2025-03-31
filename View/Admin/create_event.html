@@ -18,21 +18,23 @@
     <!-- Load Esri Leaflet Geocoder from CDN -->
     <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.css">
     <script src="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.js"></script>
-    
-    <style>
-    #map {
-        height: 500px;
-        width: 100%;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        color: #323232;
-    }
-    </style>
 
     <title>Create Event - MissionMeet</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="create_eventStyle.css">
+    <link rel="stylesheet" href="admin_ComponentStyle.css">
     <link rel="stylesheet" href="image_libraryStyle.css">
+
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #323232;
+
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -77,7 +79,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="displayImage">Display Image:</label>
+                    <label for="displayImage">Display Image:</label><br><br>
                     <button type="button" id="openModal" class="image-select-btn">Choose Image</button>
                     <span id="selectedImageName">No image selected</span>
                     <input type="hidden" id="displayImageName" name="displayImageName"><br><br><br>
@@ -88,25 +90,22 @@
                     <div id="map"></div>
                     <input type="hidden" id="eventLocation" name="eventLocation">
                     <br>
+                    <button type="submit" class="submit-btn">Create Event</button>
                 </div>
-            
-
-                <button type="submit" class="submit-btn">Create Event</button>
             </form>
-    
-        </div>
-
-        <div id="imageModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Select an Image</h2>
-                <div class="image-grid">
-                </div>
-                <br>
-                <button id="confirmImage" class="confirmButton">Confirm</button>
-            </div>
         </div>
     </section>
+
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Select an Image</h2>
+            <div class="image-grid">
+            </div>
+            <br>
+            <button id="confirmImage" class="confirmButton">Confirm</button>
+        </div>
+    </div>
 
     <footer>
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
