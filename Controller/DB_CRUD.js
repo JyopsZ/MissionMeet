@@ -1,6 +1,6 @@
  // Import the functions you need from the SDKs you need
  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
- import { getFirestore, getDocs, doc, collection, setDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+ import { getFirestore, getDocs, doc, collection, setDoc, arrayUnion, updateDoc, getDoc, arrayRemove } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 import { User } from "../Model/User.js";
 import { Org } from "../Model/Org.js";
@@ -85,7 +85,6 @@ async function getEvents() {  // READ: retrieve all data from events collection
   console.log("Events fetched successfully:", eventsArray);
   return eventsArray;
 }
-
 
 /*
 ========================= USER FUNCTIONS =================================
@@ -329,9 +328,140 @@ async function adminSignup (name, contact, email, password) {
   
 }
 
+// JOIN EVENT
+async function joinEvent(userID, eventID) {
+  try {
+    const userRef = doc(db, "Users", userID);
+    const eventRef = doc(db, "Events", eventID);
+
+    // Get user document
+    const userDoc = await getDoc(userRef);
+    if (!userDoc.exists()) {
+      console.error("User document not found:", userID);
+      return { success: false, message: "User not found." };
+    }
+
+    // Get event document
+    const eventDoc = await getDoc(eventRef);
+    if (!eventDoc.exists()) {
+      console.error("Event document not found:", eventID);
+      return { success: false, message: "Event not found." };
+    }
+
+    const userData = userDoc.data();
+    const eventData = eventDoc.data();
+
+    // Check if user already joined the event
+    if (userData.events_joined?.includes(eventID)) {
+      return { success: false, message: "You have already joined this event!" };
+    }
+
+    // Check if event already contains this user
+    if (eventData.members_joined?.includes(userID)) {
+      return { success: false, message: "You are already part of this event!" };
+    }
+
+    // Proceed with join
+    await updateDoc(userRef, {
+      events_joined: arrayUnion(eventID),
+    });
+
+if (!eventData.members_joined) {
+  await updateDoc(eventRef, {
+    members_joined: [],
+  });
+}
+
+await updateDoc(eventRef, {
+  members_joined: arrayUnion(userID),
+});
+
+    return { success: true, message: "You have successfully joined the event!" };
+
+  } catch (error) {
+    console.error("Error joining event:", error);
+    return { success: false, message: "Something went wrong. Please try again." };
+  }
+}
+
+// DELETE EVENT
+async function cancelEvent(userID, eventID) {
+  try {
+      const userRef = doc(db, "Users", userID);
+      const eventRef = doc(db, "Events", eventID);
+
+      await updateDoc(userRef, {
+          events_joined: arrayRemove(eventID)
+      });
+
+      await updateDoc(eventRef, {
+          members_joined: arrayRemove(userID)
+      });
+
+      return { success: true, message: "Successfully cancelled participation in the event." };
+  } catch (error) {
+      console.error("Error cancelling event:", error);
+      return { success: false, message: "An error occurred while cancelling the event." };
+  }
+}
+
+// DONATION FUNCTION
+async function submitDonation(userID, amount) {
+  try {
+    const donationsRef = collection(db, "Donations");
+    const snapshot = await getDocs(donationsRef);
+
+    // Generate Donation ID
+    let donationID = "D00001";
+    let highestID = 0;
+
+    snapshot.forEach((doc) => {
+      const id = doc.id;
+      const numeric = parseInt(id.substring(1));
+      if (numeric > highestID) highestID = numeric;
+    });
+
+    donationID = "D" + String(highestID + 1).padStart(5, "0");
+
+    // Human-readable timestamp
+    const now = new Date();
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    };
+    const formattedDate = now.toLocaleString("en-US", options);
+
+    // Create donation
+    await setDoc(doc(db, "Donations", donationID), {
+      user_id: userID,
+      amount_donated: parseFloat(amount),
+      timestamp: formattedDate
+    });
+
+    return { success: true, message: "Donation recorded successfully." };
+
+  } catch (error) {
+    console.error("Error processing donation:", error);
+    return { success: false, message: "Failed to record donation." };
+  }
+}
+
+
 /*
 ========================= EXPORTS =================================
 */
+// EXPORT
+export { submitDonation };
+
+// JOIN EVENT EXPORT
+export { joinEvent };
+
+// DEELETE EVENT EXPORT
+export { cancelEvent };
 
 // USER EXPORT
 export { getUsers }; 

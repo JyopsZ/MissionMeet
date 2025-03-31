@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donate</title>
+  <link rel="stylesheet" href="events.css" />
+</head>
+  <body>
+    <nav class="navbar">
+      <ul>
+        <li><a href="Home Page.html">Home</a></li>
+        <li><a href="Events Page.html">Events</a></li>
+        <li><a href="Profile Page.html">Profile</a></li>
+        <li><a href="donate page.html">Donate</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </nav>
+
+    <header>
+      <h1>Make a Donation</h1>
+    </header>
+
+    <main style="margin-top: 120px;">
+      <form id="donationForm" class="donation-container" style="max-width: 400px;">
+        <label for="donationAmount">Enter Donation Amount:</label>
+        <input type="number" id="donationAmount" placeholder="₱0.00" />
+        <button type="submit">Donate</button>
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="donationSuccessModal" class="modal">
+      <div class="modal-content">
+        <p>Thank you for your donation!</p>
+        <button id="closeSuccessModal">OK</button>
+      </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="donationErrorModal" class="modal">
+      <div class="modal-content">
+        <p id="donationErrorMessage">Something went wrong.</p>
+        <button id="closeErrorModal">OK</button>
+      </div>
+    </div>
+
+    <script>
+        function logout() {
+            localStorage.clear(); 
+            window.location.href = "../index.html"; 
+        }
+    </script>
+    
+    <script type="module">
+        import { submitDonation } from "../Controller/DB_CRUD.js";
+
+        const donationForm = document.getElementById("donationForm");
+        const amountInput = document.getElementById("donationAmount");
+
+        donationForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const userID = localStorage.getItem("userID");
+          const amount = parseFloat(amountInput.value);
+
+          if (!userID) {
+            showErrorModal("User not logged in.");
+            return;
+          }
+
+          if (!amount || amount <= 0) {
+            showErrorModal("Please enter a valid donation amount.");
+            return;
+          }
+
+          const result = await submitDonation(userID, amount);
+
+          if (result.success) {
+            donationForm.reset();
+            openModal("donationSuccessModal");
+          } else {
+            showErrorModal(result.message || "Something went wrong. Please try again.");
+          }
+        });
+
+        // Modal functions
+        function openModal(id) {
+          document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+          document.getElementById(id).style.display = 'none';
+        }
+
+        function showErrorModal(message) {
+          document.getElementById("donationErrorMessage").textContent = message;
+          openModal("donationErrorModal");
+        }
+
+        document.getElementById("closeSuccessModal").addEventListener("click", () => {
+          closeModal("donationSuccessModal");
+        });
+
+        document.getElementById("closeErrorModal").addEventListener("click", () => {
+          closeModal("donationErrorModal");
+        });
+    </script>
+  </body>
+</html>

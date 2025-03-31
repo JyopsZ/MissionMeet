@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joined Events</title>
+  <link rel="stylesheet" href="events.css" />
+</head>
+    <body>
+        <nav class="navbar">
+            <ul>
+            <li><a href="Home Page.html">Home</a></li>
+            <li><a href="Events Page.html">Events</a></li>
+            <li><a href="Profile Page.html">Profile</a></li>
+            <li><a href="donate page.html">Donate</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <h1>My Joined Events</h1>
+            <button onclick="location.href='Events Page.html'">Back to Events</button>
+        </header>
+
+        <div id="joinedEventsContainer">
+            <div class="loader"></div>
+            <div id="joined-events-list" class="event-container"></div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+        </footer>
+
+        <!-- Confirm Cancel Modal (Scoped) -->
+        <div id="joined-confirmModal" class="modal">
+            <div class="modal-content">
+            <p>Are you sure you want to cancel your participation?</p>
+            <button id="joined-confirmYes">Yes</button>
+            <button id="joined-confirmNo">No</button>
+            </div>
+        </div>
+
+        <!-- Success Modal (Scoped) -->
+        <div id="joined-successModal" class="modal">
+            <div class="modal-content">
+            <p>Successfully cancelled participation!</p>
+            <button id="joined-successOk">OK</button>
+            </div>
+        </div>
+
+        <script>
+            function logout() {
+                localStorage.clear(); 
+                window.location.href = "../index.html"; 
+            }
+        </script>
+        
+            <script type="module">
+                import { getEvents, getUsers, cancelEvent } from "../Controller/DB_CRUD.js";
+
+                    document.addEventListener("DOMContentLoaded", async () => {
+                        const userID = localStorage.getItem("userID");
+
+                        if (!userID) {
+                            alert("User not logged in.");
+                            return;
+                        }
+
+                        const users = await getUsers();
+                        const events = await getEvents();
+                        const user = users.find((u) => u.userID === userID);
+
+                        displayJoinedEvents(events, user);
+                        });
+
+                        function displayJoinedEvents(events, user) {
+                        const eventsContainer = document.getElementById("joined-events-list");
+                        const loader = document.querySelector(".loader");
+                        loader.style.display = "none";
+
+                        const joinedEventIDs = user.events_joined || [];
+                        const joinedEvents = events.filter((event) =>
+                            joinedEventIDs.includes(event.eventID)
+                        );
+
+                        if (joinedEvents.length === 0) {
+                            eventsContainer.innerHTML = "<p>You haven't joined any events yet.</p>";
+                            return;
+                        }
+
+                        eventsContainer.innerHTML = "";
+
+                        joinedEvents.forEach((event) => {
+                            const eventElement = document.createElement("div");
+                            eventElement.className = "event-subcontainer";
+                            eventElement.innerHTML = `
+                            <h3>${event.name}</h3>
+                            <p>${event.details}</p>
+                            <p>${event.date}</p>
+                            <button class="cancel-btn" data-id="${event.eventID}">Cancel</button>
+                            `;
+                            eventsContainer.appendChild(eventElement);
+                        });
+
+                        document.querySelectorAll(".cancel-btn").forEach((btn) => {
+                            btn.addEventListener("click", () => {
+                            const eventID = btn.getAttribute("data-id");
+
+                            const confirmModal = document.getElementById("joined-confirmModal");
+                            const confirmYes = document.getElementById("joined-confirmYes");
+                            const confirmNo = document.getElementById("joined-confirmNo");
+                            const successModal = document.getElementById("joined-successModal");
+                            const successOk = document.getElementById("joined-successOk");
+
+                            // Clear old listeners
+                            confirmYes.onclick = null;
+                            confirmNo.onclick = null;
+                            successOk.onclick = null;
+
+                            // Show confirm modal
+                            confirmModal.style.display = "flex";
+
+                            confirmYes.onclick = async () => {
+                                confirmModal.style.display = "none";
+                                const result = await cancelEvent(user.userID, eventID);
+                                if (result.success) {
+                                successModal.style.display = "flex";
+                                successOk.onclick = () => {
+                                    successModal.style.display = "none";
+                                    location.reload();
+                                };
+                                } else {
+                                alert("Failed to cancel. Please try again.");
+                                }
+                            };
+
+                            confirmNo.onclick = () => {
+                                confirmModal.style.display = "none";
+                            };
+                        });
+                    });
+                }
+        </script>
+    </body>
+</html>

@@ -1,12 +1,12 @@
 export class User {
-    constructor(userID, name, email, password, contact_no) {
+    constructor(userID, name, email, password, contact_no, events_joined = []) {
         
         this.userID = userID;
         this.name = name;
         this.email = email;
         this.password = password;
         this.contact_no = contact_no;
-        this.events_joined = [];
+        this.events_joined = events_joined;
     }
 
     getUserID() {
