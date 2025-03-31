@@ -56,6 +56,48 @@ async function getOrgs() {  // READ: retrieve all data from orgs collection
   return orgsArray;
 }
 
+async function getAdminOrg(adminID) {
+  try {
+    // Get the admin's data
+    const admins = await getAdmins();
+    const admin = admins.find(a => a.getAdminID() === adminID);
+    
+    if (!admin) {
+      return { success: false, message: "Admin not found" };
+    }
+
+    const orgID = admin.getOrgAffiliation();
+    if (!orgID) {
+      return { success: false, message: "Admin has no organization affiliation" };
+    }
+
+    // Get the organization data
+    const orgs = await getOrgs();
+    const org = orgs.find(o => o.getOrgID() === orgID);
+    
+    if (!org) {
+      return { success: false, message: "Organization not found" };
+    }
+
+    return {
+      success: true,
+      org: {
+        id: org.getOrgID(),
+        name: org.getName(),
+        description: org.getDescription(),
+        address: org.getAddress(),
+        email: org.getEmail(),
+        contact: org.getContact(),
+        logo: org.getLogo(),
+        subPlan: org.getSubPlan()
+      }
+    };
+  } catch (error) {
+    console.error("Error getting admin's organization:", error);
+    return { success: false, message: "Error getting organization information" };
+  }
+}
+
 async function createOrg(orgName, orgDescription, orgAddress, orgEmail, orgContact, orgLogo, orgSubPlan, adminID) {
   try {
 
@@ -243,7 +285,9 @@ async function verifyAdminLogin(email, password) {
         success: true,
         message: "Login successful",
         userType: "admin",
-        userID: doc.id
+        userID: doc.id,
+        name: adminData.name,
+        email: adminData.email
       };
     }
   }
@@ -386,6 +430,7 @@ export { getUsers };
 
 // ORG EXPORT
 export { getOrgs };
+export { getAdminOrg };
 export { createOrg };
 
 // EVENT EXPORT
