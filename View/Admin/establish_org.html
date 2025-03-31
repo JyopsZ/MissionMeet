@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Establish Organization</title>
     <link rel="stylesheet" href="admin_ComponentStyle.css">
+    <link rel="stylesheet" href="image_libraryStyle.css">
+
+    <style>
+
+        #bottom-footer,
+        footer {
+
+            position: relative;
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -40,7 +51,9 @@
             <input type="text" id="orgContact" name="orgContact">
 
             <label for="orgLogo">Organization Logo:</label>
-            <input type="file" id="orgLogo" name="orgLogo" accept="image/*">
+            <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
+            <span id="selectedImageName">No image selected</span>
+            <input type="hidden" id="displayLogoName" name="displayLogoName"><br><br><br>
 
             <label for="subscriptionPlan">Choose Subscription Plan:</label>
             <select id="subscriptionPlan" name="subscriptionPlan">
@@ -51,6 +64,17 @@
 
             <button type="submit">Create Organization</button>
         </form>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Select an Image</h2>
+            <div class="image-grid">
+            </div>
+            <br>
+            <button id="confirmImage" class="confirmButton">Confirm</button>
+        </div>
     </div>
 
     <footer>
@@ -77,37 +101,10 @@
             const orgEmail = document.getElementById('orgEmail').value;
             const orgContact = document.getElementById('orgContact').value;
             const orgSubPlan = document.getElementById('subscriptionPlan').value;
-            const logoInput = document.getElementById('orgLogo');
-            
-            // Handle file upload
-            let orgLogo = null;
-            if (logoInput.files.length > 0) {
-                const file = logoInput.files[0];
-                orgLogo = file.name;
-                
-                try {
-                    // Save file to local directory
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const fileContent = e.target.result;
-                        
-                        // Create a download link and trigger it programmatically
-                        const a = document.createElement('a');
-                        a.href = fileContent;
-                        a.download = `C:\\Lance Files\\DLSU College\\ITISDEV\\MissionMeet-main\\View\\Images\\${file.name}`; //eto palitan
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                    };
-                    reader.readAsDataURL(file);
-                } catch (error) {
-                    console.error("Error saving file locally:", error);
-                    alert("Error saving logo file. Organization will be created without logo.");
-                }
-            }
+            const logoInput = document.getElementById('displayLogoName').value;
     
             const result = await createOrg(
-                orgName, orgDescription, orgAddress, orgEmail, orgContact, orgLogo, orgSubPlan, adminID
+                orgName, orgDescription, orgAddress, orgEmail, orgContact, logoInput, orgSubPlan, adminID
             );
             
             if (result.success) {
@@ -115,6 +112,48 @@
                 window.location.href = 'organization_created.html';
             } else {
                 alert('Error creating organization: ' + (result.message || 'Unknown error'));
+            }
+        });
+
+        document.getElementById("openModal").addEventListener("click", function() {
+            document.getElementById("imageModal").style.display = "flex";
+        });
+
+        document.querySelector(".close").addEventListener("click", function() {
+            document.getElementById("imageModal").style.display = "none";
+        });
+
+        const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"]; // Replace with actual filenames
+        const imageGrid = document.querySelector(".image-grid");
+        let selectedImage = null;
+
+        imageFilenames.forEach(filename => {
+            
+            const img = document.createElement("img");
+            img.src = `../Images/${filename}`;
+            img.dataset.filename = filename;
+
+            img.addEventListener("click", function() {
+        
+                document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
+                img.classList.add("selected");
+                selectedImage = filename;
+             });
+
+            imageGrid.appendChild(img);
+        });
+
+        document.getElementById("confirmImage").addEventListener("click", function() {
+            
+            if (selectedImage) {
+                document.getElementById("displayLogoName").value = selectedImage;
+                document.getElementById("imageModal").style.display = "none";
+
+                document.getElementById("selectedImageName").textContent = selectedImage;
+            } 
+            
+            else {
+                alert("Please select an image.");
             }
         });
     </script>

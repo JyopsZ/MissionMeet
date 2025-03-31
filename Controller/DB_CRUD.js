@@ -102,12 +102,12 @@ async function createOrg(orgName, orgDescription, orgAddress, orgEmail, orgConta
   try {
 
     const orgs = await getOrgs();
-    let orgID = "ORG00001"; // Default org ID
+    let orgID = "O00001"; // Default org ID
     
     if (orgs.length > 0) {
       let highestID = 0;
       orgs.forEach(org => {
-        const numeric = parseInt(org.getOrgID().replace("ORG", ""));
+        const numeric = parseInt(org.getOrgID().replace("O", ""));
         if (numeric > highestID) {
           highestID = numeric;
         }
