@@ -3,8 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Source for Esri Leaflet: Courtney Yatteau Esri Leaflet Series @ Youtube https://www.youtube.com/watch?v=gpOK0rnMq4U -->
+    <!-- Source for Philippines Dataset for landmark overlays: https://data.humdata.org/dataset/hotosm_phl_buildings -->
+
+    <!-- Load Leaflet from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+    <script src="https://unpkg.com/esri-leaflet-vector@4.2.2/dist/esri-leaflet-vector.js"></script>
+
+    <!-- Load Esri Leaflet Geocoder from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.css">
+    <script src="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.js"></script>
+    
+    <style>
+    #map {
+        height: 500px;
+        width: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        color: #323232;
+    }
+    </style>
+
     <title>Create Event</title>
-    <link rel="stylesheet" href="admin_ComponentStyle.css">
+    <link rel="stylesheet" href="create_eventStyle.css">
+    <link rel="stylesheet" href="image_libraryStyle.css">
 </head>
 <body>
 
@@ -23,7 +50,7 @@
     </header>
 
     <div class="admin-container">
-        <form action="event_created.html" method="POST">
+        <form id="eventForm" action="#" method="POST">
             <label for="eventName">Event Name:</label>
             <input type="text" id="eventName" name="eventName" required>
 
@@ -36,13 +63,155 @@
             <label for="eventDescription">Event Description:</label>
             <textarea id="eventDescription" name="eventDescription" required></textarea>
 
+            <label for="displayImage">Display Image:</label>
+            <button type="button" id="openModal" class="image-select-btn">Choose Image</button>
+            <span id="selectedImageName">No image selected</span>
+            <input type="hidden" id="displayImageName" name="displayImageName"><br><br><br>
+
+            <label for="map">Event Location:</label>
+            <div id="map"></div>
+            <input type="hidden" id="eventLocation" name="eventLocation">
+            <br>
+
             <button type="submit">Create Event</button>
         </form>
+
+    </div>
+
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Select an Image</h2>
+            <div class="image-grid">
+            </div>
+            <br>
+            <button id="confirmImage" class="confirmButton">Confirm</button>
+        </div>
     </div>
 
     <footer>
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
     </footer>
 
+    <script type="module">
+        import { createEvent } from '../../Controller/DB_CRUD.js';
+
+        const map = L.map("map");
+        map.setView([14.564781621943611, 120.99316669725252], 16);
+
+        const apiKey = "AAPTxy8BH1VEsoebNVZXo8HurIL-G0eUvB5xglJ-20E_FhY9vogODhUg9C9_wUOdvicfmIs4uVtlB5Dj0qblyEHXb91lNJwJBX0hbzWxyHYXHqt_TDSynuWOSLBwi7jJsv6RZeSovWyN37I0VFdxpTBtwWnIaSZyKbuwQ6eGxYvs8T2jloCpPxVUqvXx380Z-2UkId2bqfmbCtr5Y5Vp3yyHBvALMSYZSUvj9R3jzwX4Qic.AT1_nLUKAB1N";
+
+        L.esri.Vector.vectorBasemapLayer("arcgis/community", {
+            apiKey: apiKey
+        }).addTo(map);
+
+
+        const layerGroup = L.layerGroup().addTo(map);
+
+        map.on("click", function (e) {
+            L.esri.Geocoding
+                .reverseGeocode({
+                apikey: apiKey
+            }).latlng(e.latlng).run(function (error, result) {
+
+                layerGroup.clearLayers();
+                const marker = L.marker(result.latlng).bindPopup(result.address.Match_addr).addTo(layerGroup);
+                marker.openPopup();
+                
+                console.log(result.address.Match_addr); // log results and place results to hidden form
+                document.getElementById("eventLocation").value = result.address.Match_addr;
+            });
+        });
+
+        const searchControl = L.esri.Geocoding.geosearch({
+            position: "topright",
+            useMapBounds: false,
+            providers: [
+                L.esri.Geocoding.arcgisOnlineProvider({
+                apikey: apiKey
+            })
+            ]
+        }).addTo(map);
+
+        searchControl.on("results", function (data) {
+            layerGroup.clearLayers();
+            for (let i = data.results.length - 1; i >= 0; i--) {
+                
+                const marker = L.marker(data.results[i].latlng);
+                marker.bindPopup(data.results[i].text || "Selected location").addTo(layerGroup);
+                marker.openPopup();
+
+                document.getElementById("eventLocation").value = data.results[i].text;
+                console.log(data.results[i].text);
+            }
+        });
+
+        document.addEventListener('submit', async (e) => {
+
+            e.preventDefault();
+
+            const eventName = document.getElementById('eventName').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const eventTime = document.getElementById('eventTime').value;
+            const eventDescription = document.getElementById('eventDescription').value;
+            const eventLocation = document.getElementById('eventLocation').value;
+
+            const image = document.getElementById('displayImageName').value;
+
+            const result = await createEvent(eventName, eventDescription, eventDate, eventTime, image, eventLocation);
+
+            if (result.success) {
+                alert(result.message);
+                window.location.href = 'Admin_dashboard.html';
+            }
+
+            else {
+                alert("There Was an Error Creating the Event");
+            }
+        });
+
+        document.getElementById("openModal").addEventListener("click", function() {
+            document.getElementById("imageModal").style.display = "flex";
+        });
+
+        document.querySelector(".close").addEventListener("click", function() {
+            document.getElementById("imageModal").style.display = "none";
+        });
+
+        const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"]; // Replace with actual filenames
+        const imageGrid = document.querySelector(".image-grid");
+        let selectedImage = null;
+
+        imageFilenames.forEach(filename => {
+            
+            const img = document.createElement("img");
+            img.src = `../Images/${filename}`;
+            img.dataset.filename = filename;
+
+            img.addEventListener("click", function() {
+        
+                document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
+                img.classList.add("selected");
+                selectedImage = filename;
+             });
+
+            imageGrid.appendChild(img);
+        });
+
+        document.getElementById("confirmImage").addEventListener("click", function() {
+            
+            if (selectedImage) {
+                document.getElementById("displayImageName").value = selectedImage;
+                document.getElementById("imageModal").style.display = "none";
+
+                document.getElementById("selectedImageName").textContent = selectedImage;
+            } 
+            
+            else {
+                alert("Please select an image.");
+            }
+        });
+
+    </script>
 </body>
 </html>
