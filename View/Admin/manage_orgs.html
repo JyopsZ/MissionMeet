@@ -4,51 +4,69 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Edit Organization</title>
-  <link rel="stylesheet" href="../events.css" />
+  <link rel="stylesheet" href="admin_ComponentStyle.css" />
 </head>
     <body>
         <nav class="navbar">
-            <ul>
+            <a href="#" class="navbar-logo">MissionMeet</a>
+            <ul class="navbar-links">
                 <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
-                <li><a href="manage_orgs.html">Manage Org</a></li>
+                <li><a href="manage_orgs.html">Manage Organizations</a></li>
                 <li><a href="events.html">Manage Events</a></li>
                 <li><a href="profile.html">Profile</a></li>
-                <li><a href="#" onclick="logout()">Logout</a></li>
             </ul>
+            <div class="navbar-cta">
+                <a href="#" class="login-btn" onclick="logout()">Logout</a>
+            </div>
         </nav>
 
         <header>
             <h1>Edit Organization Info</h1>
         </header>
 
-        <main style="margin-top: 120px;">
-            <div class="events-container">
+        
+        <div class="admin-container">
             <form id="editOrgForm">
-                <label for="org_name">Name:</label>
-                <input type="text" id="org_name" placeholder="Name" required />
+
+                <div class="form-group">
+                    <label for="org_name">Name:</label>
+                    <input type="text" id="org_name" placeholder="Name" required />
+                </div>
                 
-                <label for="org_description">Description:</label>
-                <textarea id="org_description" placeholder="Description" required></textarea>
+                <div class="form-group">
+                    <label for="org_description">Description:</label>
+                    <textarea id="org_description" placeholder="Description" required></textarea>
+                </div>
                 
-                <label for="org_email">Email:</label>
-                <input type="text" id="org_email" placeholder="Email"/>
+                <div class="form-group">
+                    <label for="org_email">Email:</label>
+                    <input type="text" id="org_email" placeholder="Email"/>
+                </div>
                 
-                <label for="org_contact">Contact:</label>
-                <input type="text" id="org_contact" placeholder="Contact"/>
+                <div class="form-group">
+                    <label for="org_contact">Contact:</label>
+                    <input type="text" id="org_contact" placeholder="Contact"/>
+                </div>
                 
-                <label for="org_address">Address:</label>
-                <input type="text" id="org_address" placeholder="Address"/>
+                <div class="form-group">
+                    <label for="org_address">Address:</label>
+                    <input type="text" id="org_address" placeholder="Address"/>
+                </div>
                 
-                <label for="org_subplan">Subscription Plan:</label>
-                <input type="text" id="org_subplan" placeholder="Subplan" required />
+                <div class="form-group">
+                    <label for="org_subplan">Subscription Plan:</label>
+                    <input type="text" id="org_subplan" placeholder="Subplan" required />
+                </div>
                 
-                <label for="org_logo">Logo:</label>
-                <input type="file" id="org_logo" accept="image/*"/>
+                <div class="form-group">
+                    <label for="org_logo">Logo:</label>
+                    <input type="file" id="org_logo" accept="image/*"/>
+                </div>
                 
                 <button type="submit">Save Changes</button>
             </form>
-            </div>
-        </main>
+        </div>
+        
 
         <footer>
             <p>&copy; 2025 Mission Meet. All rights reserved.</p>
@@ -91,13 +109,15 @@
                     alert(result.message);
                 }
             });
+        </script>
 
+        <script>
             function logout() {
                 localStorage.removeItem('userType');
                 localStorage.removeItem('userID');
                 localStorage.removeItem('userName');
                 localStorage.removeItem('userEmail');
-                window.location.href = '../Login Page.html';
+                window.location.href = '../../index.html';
             }
         </script>
     </body>
