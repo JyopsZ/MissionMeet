@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Donate</title>
   <link rel="stylesheet" href="events.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     .event-btn {
@@ -15,18 +16,21 @@
   </style>
 </head>
   <body>
-    <nav class="navbar">
-      <ul>
-          <li><a href="Home Page.html">Home</a></li>
-          <li><a href="Events Page.html">Events</a></li>
-          <li><a href="Profile Page.html">Profile</a></li>
-          <li><a href="#" onclick="logout()">Logout</a></li>
-      </ul>
-  </nav>
+  <nav class="navbar">
+    <a href="#" class="navbar-logo">MissionMeet</a>
+    <ul class="navbar-links">
+        <li><a href="Home Page.html">Home</a></li>
+        <li><a href="Events Page.html">Events</a></li>
+        <li><a href="Profile-Page.html">Profile</a></li>
+    </ul>
+    <div class="navbar-cta">
+        <a href="#" class="login-btn" onclick="logout()">Logout</a>
+    </div>
+</nav>
 
-    <header>
+    <section class="header-section">
       <h1>Make a Donation</h1>
-    </header>
+    </section>
 
     <section class="events">
       <form id="donationForm" class="donation-container" style="max-width: 400px;">

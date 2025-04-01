@@ -5,25 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Joined Events</title>
   <link rel="stylesheet" href="events.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
     <body>
         <nav class="navbar">
-            <ul>
+            <a href="#" class="navbar-logo">MissionMeet</a>
+            <ul class="navbar-links">
                 <li><a href="Home Page.html">Home</a></li>
-                <li><a href="Events Page.html">Events</a></li>
-                <li><a href="Profile Page.html">Profile</a></li>
+                <li><a href="Profile-Page.html">Profile</a></li>
                 <li><a href="donate page.html">Donate</a></li>
-                <li><a href="#" onclick="logout()">Logout</a></li>
+                <li><a href="Events Page.html">Back to Events</a></li>
             </ul>
+            <div class="navbar-cta">
+                <a href="#" class="login-btn" onclick="logout()">Logout</a>
+            </div>
         </nav>
 
-        <header>
+        <section class="header-section">
             <h1>My Joined Events</h1>
-            <button onclick="location.href='Events Page.html'" class="event-btn">Back to Events</button>
-        </header>
+        </section>
 
         <section class="events">
-            <h2>Events You've Joined</h2>
             <div class="event-container" id="joined-events-list">
                 <div class="loader"></div>
             </div>
