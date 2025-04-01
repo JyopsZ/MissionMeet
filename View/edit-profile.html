@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile</title>
+  <link rel="stylesheet" href="profile.css" />
+    </head>
+        <body>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="Events Page.html">Events</a></li>
+                    <li><a href="Profile Page.html">Profile</a></li>
+                    <li><a href="donate page.html">Donate</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </nav>
+
+            <header>
+                <h1>Profile</h1>
+            </header>
+
+            <div class="profile-container">
+            <h2>Edit Profile</h2>
+                <form id="profileForm">
+                    <label for="user-email">User Email:</label>
+                    <input type="email" id="user-email" name="email" required><br>
+
+                    <label for="username">User Name:</label>
+                    <input type="text" id="username" name="name" required><br>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required><br>
+
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="text" id="contact_number" name="contact" required><br>
+
+                    <button type="submit" class="update-profile-btn">Update Profile</button>
+                </form>
+            </div>
+
+            <footer>
+                <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+            </footer>
+
+            <!-- Success Modal -->
+            <div id="successModal" class="modal">
+                <div class="modal-content">
+                    <p>Profile updated successfully!</p>
+                    <button onclick="closeModal('successModal')">OK</button>
+                </div>
+            </div>
+
+            <!-- Error Modal -->
+            <div id="errorModal" class="modal">
+                <div class="modal-content">
+                    <p id="errorMessage">Failed to update profile.</p>
+                    <button class="error-btn" onclick="closeModal('errorModal')">OK</button>
+                </div>
+            </div>
+
+                <script>
+                    function logout() {
+                        localStorage.clear();
+                        window.location.href = "../index.html";
+                    }
+
+                    function openModal(id) {
+                        document.getElementById(id).style.display = "flex";
+                    }
+
+                    function closeModal(id) {
+                        document.getElementById(id).style.display = "none";
+                    }
+
+                    function showError(message) {
+                        document.getElementById("errorMessage").textContent = message;
+                        openModal("errorModal");
+                    }
+                </script>
+
+                <script type="module">
+                    import { getUsers, updateUser } from "../Controller/DB_CRUD.js";
+
+                    document.addEventListener("DOMContentLoaded", async () => {
+                        const userID = localStorage.getItem("userID");
+
+                        if (!userID) {
+                            showError("User not logged in.");
+                            return;
+                        }
+
+                        const users = await getUsers();
+                        const user = users.find(u => u.getUserID() === userID);
+
+                        if (!user) {
+                            showError("User not found.");
+                            return;
+                        }
+
+                        // Fill inputs with user data
+                        document.getElementById("username").value = user.getName();
+                        document.getElementById("user-email").value = user.getEmail();
+                        document.getElementById("password").value = user.getPassword();
+                        document.getElementById("contact_number").value = user.getContact();
+
+                        // Handle form submit
+                        document.getElementById("profileForm").addEventListener("submit", async (e) => {
+                                e.preventDefault();
+
+                                const updatedData = {
+                                    name: document.getElementById("username").value.trim(),
+                                    email: document.getElementById("user-email").value.trim(),
+                                    password: document.getElementById("password").value.trim(),
+                                    contact_no: document.getElementById("contact_number").value.trim()
+                                };
+
+                                const result = await updateUser(userID, updatedData);
+
+                                if (result.success) {
+                                    openModal("successModal");
+                                     // Wait 1.5 seconds then redirect
+                                    setTimeout(() => {
+                                        window.location.href = "Profile-Page.html";
+                                    }, 1500);
+                                } else {
+                                    showError(result.message || "Something went wrong.");
+                                }
+                        });
+                    });
+            </script>
+    </body>
+</html>

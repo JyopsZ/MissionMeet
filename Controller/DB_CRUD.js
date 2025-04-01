@@ -251,6 +251,24 @@ async function getUsers() {  // READ: retrieve all data from users collection
   return usersArray;
 }
 
+// UPDATE USER PROFILE
+async function updateUser(userID, updatedData) {
+  try {
+    const userRef = doc(db, "Users", userID);
+
+    await updateDoc(userRef, {
+      name: updatedData.name,
+      email: updatedData.email,
+      password: updatedData.password,
+      contact_no: updatedData.contact_no,
+    });
+
+    return { success: true, message: "Profile updated successfully." };
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    return { success: false, message: "Failed to update profile." };
+  }
+}
 /*
 ========================= ADMIN FUNCTIONS =================================
 */
@@ -601,6 +619,8 @@ export { cancelEvent };
 
 // USER EXPORT
 export { getUsers }; 
+export { updateUser };
+
 
 // ORG EXPORT
 export { getOrgs };
