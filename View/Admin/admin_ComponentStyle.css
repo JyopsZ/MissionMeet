@@ -257,3 +257,19 @@ footer {
 .mb-4 {
     margin-bottom: 1rem;
 }
+
+#currentLogoPreview {
+    text-align: center;
+    margin: 15px auto;
+}
+
+.org-infoLine {
+
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 1px;
+    border-color: #45a049;;
+    border-style: solid;
+    padding: 10px;
+}

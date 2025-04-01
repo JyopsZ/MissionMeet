@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Edit Organization</title>
   <link rel="stylesheet" href="admin_ComponentStyle.css" />
+<link rel="stylesheet" href="image_libraryStyle.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
     <body>
         <nav class="navbar">
@@ -55,18 +57,35 @@
                 
                 <div class="form-group">
                     <label for="org_subplan">Subscription Plan:</label>
-                    <input type="text" id="org_subplan" placeholder="Subplan" required />
+                    <select id="org_subplan" name="org_subplan">
+                        <option value="basic">Basic</option>
+                        <option value="premium">Premium</option>
+                        <option value="enterprise">Enterprise</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="org_logo">Logo:</label>
-                    <input type="file" id="org_logo" accept="image/*"/>
-                </div>
+                    <label for="org_logo">Logo:</label><br><br>
+                    <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
+                    <span id="selectedImageName">No image selected</span>
+                    <input type="hidden" id="org_logo" name="org_logo">
+                    <div id="currentLogoPreview"></div>
+                </div> <br>
                 
                 <button type="submit">Save Changes</button>
             </form>
         </div>
         
+        <div id="imageModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Select an Image</h2>
+                <div class="image-grid">
+                </div>
+                <br>
+                <button id="confirmImage" class="confirmButton">Confirm</button>
+            </div>
+        </div>
 
         <footer>
             <p>&copy; 2025 Mission Meet. All rights reserved.</p>
@@ -95,18 +114,18 @@
                     document.getElementById('org_contact').value = result.org.contact;
                     document.getElementById('org_address').value = result.org.address;
                     document.getElementById('org_subplan').value = result.org.subPlan;
-                    
-                    const logoInput = document.getElementById('org_logo');
+                    document.getElementById('org_logo').value = result.org.logo;
+
                     if (result.org.logo) {
-                        const logoPreview = document.createElement('div');
-                        logoPreview.innerHTML = `
-                            <p>Current Logo:</p>
-                            <img src="${result.org.logo}" alt="Current Logo" style="max-width: 200px; display: block; margin: 10px 0;">
+
+                        
+                        document.getElementById('selectedImageName').textContent = result.org.logo;
+                        
+                        const currentLogoPreview = document.getElementById('currentLogoPreview');
+                        currentLogoPreview.innerHTML = `
+                            <img src="../Images/${result.org.logo}" alt="Current Logo" style="max-width: 200px;">
                         `;
-                        logoInput.parentNode.insertBefore(logoPreview, logoInput);
                     }
-                } else {
-                    alert(result.message);
                 }
         
                 const editOrgForm = document.getElementById('editOrgForm');
@@ -125,6 +144,7 @@
                         org_contact: document.getElementById('org_contact').value,
                         org_address: document.getElementById('org_address').value,
                         org_subplan: document.getElementById('org_subplan').value,
+                        org_logo: document.getElementById('org_logo').value
                     };
         
                     try {
@@ -137,6 +157,49 @@
                     } catch (error) {
                         console.error('Error updating organization:', error);
                         alert('An error occurred while updating the organization');
+                    }
+                });
+
+                // Image Selector Modal Stuff
+                document.getElementById("openModal").addEventListener("click", function() {
+                    document.getElementById("imageModal").style.display = "flex";
+                });
+
+                document.querySelector(".close").addEventListener("click", function() {
+                    document.getElementById("imageModal").style.display = "none";
+                });
+
+                const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"]; // Replace with actual filenames
+                const imageGrid = document.querySelector(".image-grid");
+                let selectedImage = null;
+
+                imageFilenames.forEach(filename => {
+                    
+                    const img = document.createElement("img");
+                    img.src = `../Images/${filename}`;
+                    img.dataset.filename = filename;
+
+                    img.addEventListener("click", function() {
+                
+                        document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
+                        img.classList.add("selected");
+                        selectedImage = filename;
+                    });
+
+                    imageGrid.appendChild(img);
+                });
+
+                document.getElementById("confirmImage").addEventListener("click", function() {
+                    
+                    if (selectedImage) {
+                        document.getElementById("org_logo").value = selectedImage;
+                        document.getElementById("imageModal").style.display = "none";
+
+                        document.getElementById("selectedImageName").textContent = selectedImage;
+                    } 
+                    
+                    else {
+                        alert("Please select an image.");
                     }
                 });
             });

@@ -4,35 +4,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Organization Profile</title>
-  <link rel="stylesheet" href="../events.css" />
+  <link rel="stylesheet" href="admin_ComponentStyle.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
     <body>
         <nav class="navbar">
-            <ul>
-                <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
-                <li><a href="manage_orgs.html">Manage Org</a></li>
-                <li><a href="events.html">Manage Events</a></li>
-                <li><a href="profile.html">Profile</a></li>
-                <li><a href="#" onclick="logout()">Logout</a></li>
-            </ul>
-        </nav>
+          <a href="#" class="navbar-logo">MissionMeet</a>
+          <ul class="navbar-links">
+              <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
+              <li><a href="profile.html">Organization Profile</a></li>
+              <li><a href="manage_users.html">Manage Participants</a></li>
+          </ul>
+          <div class="navbar-cta">
+              <a href="#" class="login-btn" onclick="logout()">Logout</a>
+          </div>
+      </nav>
 
     <header>
         <h1>Organization Profile</h1>
     </header>
 
-    <main style="margin-top: 120px;">
-        <div class="events-container" id="orgProfile">
-        <p><strong>Name:</strong> <span id="org_name"></span></p>
-        <p><strong>Description:</strong> <span id="org_description"></span></p>
-        <p><strong>Email:</strong> <span id="org_email"></span></p>
-        <p><strong>Contact:</strong> <span id="org_contact"></span></p>
-        <p><strong>Address:</strong> <span id="org_address"></span></p>
-        <p><strong>Subplan:</strong> <span id="org_subplan"></span></p>
-        <p><strong>Logo:</strong> <span id="org_logo"></span></p>
-        <button onclick="location.href='manage_orgs.html'">Edit</button>
+        <div class="admin-container" id="orgProfile">
+
+        <div class="org-infoLine">
+          <p><strong>Name:</strong> &nbsp; <span id="org_name"></span></p>
         </div>
-    </main>
+        
+        <div class="org-infoLine">
+          <p><strong>Description:</strong> &nbsp; <span id="org_description"></span></p>
+        </div>
+        
+        <div class="org-infoLine">
+          <p><strong>Email:</strong> &nbsp; <span id="org_email"></span></p>
+        </div>
+        
+        <div class="org-infoLine">
+          <p><strong>Contact:</strong> &nbsp; <span id="org_contact"></span></p>
+        </div>
+
+        <div class="org-infoLine">
+          <p><strong>Address:</strong> &nbsp; <span id="org_address"></span></p>
+        </div>
+
+        <div class="org-infoLine">
+          <p><strong>Subplan:</strong> &nbsp; <span id="org_subplan"></span></p>
+        </div>
+
+        <div class="org-infoLine">
+          <p><strong>Logo:</strong> &nbsp; <span id="org_logo"></span></p>
+        </div>
+        <div id="currentLogoPreview"></div>
+          
+          <button onclick="location.href='manage_orgs.html'">Edit</button>
+        </div>
 
     
         <footer>
@@ -62,18 +86,24 @@
                 document.getElementById('org_subplan').textContent = result.org.subPlan;
                 document.getElementById('org_logo').textContent = result.org.logo;
                 
+                const currentLogoPreview = document.getElementById('currentLogoPreview');
+                        currentLogoPreview.innerHTML = `
+                            <img src="../Images/${result.org.logo}" alt="Current Logo" style="max-width: 200px;">
+                        `;
 
               } else {
                 alert(result.message);
               }
             });
-          
+          </script>
+
+          <script>
             function logout() {
               localStorage.removeItem('userType');
               localStorage.removeItem('userID');
               localStorage.removeItem('userName');
               localStorage.removeItem('userEmail');
-              window.location.href = '../Login Page.html';
+              window.location.href = '../index.html';
             }
           </script>
     </body>
