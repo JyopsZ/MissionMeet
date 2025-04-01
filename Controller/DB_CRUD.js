@@ -100,7 +100,6 @@ async function getAdminOrg(adminID) {
 
 async function createOrg(orgName, orgDescription, orgAddress, orgEmail, orgContact, orgLogo, orgSubPlan, adminID) {
   try {
-
     const orgs = await getOrgs();
     let orgID = "O00001"; // Default org ID
     
@@ -124,11 +123,10 @@ async function createOrg(orgName, orgDescription, orgAddress, orgEmail, orgConta
       org_contact: orgContact || "",
       org_logo: orgLogo || "",
       org_subplan: orgSubPlan,
-      admins: [adminID], // This should Aad the creating admin as first admin
+      admins: [adminID],
       events: []
     });
-
-    // Update the admin's org_affiliation para admin = org
+    
     await setDoc(doc(db, "Admins", adminID), {
       org_affiliation: orgID
     }, { merge: true });
@@ -142,6 +140,22 @@ async function createOrg(orgName, orgDescription, orgAddress, orgEmail, orgConta
     return {
       success: false,
       message: "Error creating organization"
+    };
+  }
+}
+
+async function updateOrg(orgID, orgData) {
+  try {
+    await setDoc(doc(db, "Orgs", orgID), orgData, { merge: true });
+    return {
+      success: true,
+      message: "Organization updated successfully"
+    };
+  } catch (error) {
+    console.error("Error updating organization:", error);
+    return {
+      success: false,
+      message: "Error updating organization"
     };
   }
 }
@@ -626,6 +640,7 @@ export { updateUser };
 export { getOrgs };
 export { getAdminOrg };
 export { createOrg };
+export { updateOrg };
 
 // EVENT EXPORT
 export { getEvents };
