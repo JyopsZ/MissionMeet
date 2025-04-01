@@ -9,44 +9,46 @@
     <body>
         <nav class="navbar">
             <ul>
-            <li><a href="Home Page.html">Home</a></li>
-            <li><a href="Events Page.html">Events</a></li>
-            <li><a href="Profile Page.html">Profile</a></li>
-            <li><a href="donate page.html">Donate</a></li>
-            <li><a href="#" onclick="logout()">Logout</a></li>
+                <li><a href="Home Page.html">Home</a></li>
+                <li><a href="Events Page.html">Events</a></li>
+                <li><a href="Profile Page.html">Profile</a></li>
+                <li><a href="donate page.html">Donate</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
             </ul>
         </nav>
 
         <header>
             <h1>My Joined Events</h1>
-            <button onclick="location.href='Events Page.html'">Back to Events</button>
+            <button onclick="location.href='Events Page.html'" class="event-btn">Back to Events</button>
         </header>
 
-        <div id="joinedEventsContainer">
-            <div class="loader"></div>
-            <div id="joined-events-list" class="event-container"></div>
+        <section class="events">
+            <h2>Events You've Joined</h2>
+            <div class="event-container" id="joined-events-list">
+                <div class="loader"></div>
+            </div>
+        </section>
+
+        <!-- Confirm Cancel Modal (Scoped) -->
+        <div id="joined-confirmModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <p>Are you sure you want to cancel your participation?</p>
+                <button id="joined-confirmYes">Yes</button>
+                <button id="joined-confirmNo">No</button>
+            </div>
+        </div>
+
+        <!-- Success Modal (Scoped) -->
+        <div id="joined-successModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <p>Successfully cancelled participation!</p>
+                <button id="joined-successOk">OK</button>
+            </div>
         </div>
 
         <footer>
             <p>&copy; 2025 Mission Meet. All rights reserved.</p>
         </footer>
-
-        <!-- Confirm Cancel Modal (Scoped) -->
-        <div id="joined-confirmModal" class="modal">
-            <div class="modal-content">
-            <p>Are you sure you want to cancel your participation?</p>
-            <button id="joined-confirmYes">Yes</button>
-            <button id="joined-confirmNo">No</button>
-            </div>
-        </div>
-
-        <!-- Success Modal (Scoped) -->
-        <div id="joined-successModal" class="modal">
-            <div class="modal-content">
-            <p>Successfully cancelled participation!</p>
-            <button id="joined-successOk">OK</button>
-            </div>
-        </div>
 
         <script>
             function logout() {
@@ -97,12 +99,12 @@
                             <h3>${event.name}</h3>
                             <p>${event.details}</p>
                             <p>${event.date}</p>
-                            <button class="cancel-btn" data-id="${event.eventID}">Cancel</button>
+                            <button class="event-btn" data-id="${event.eventID}">Cancel</button>
                             `;
                             eventsContainer.appendChild(eventElement);
                         });
 
-                        document.querySelectorAll(".cancel-btn").forEach((btn) => {
+                        document.querySelectorAll(".event-btn").forEach((btn) => {
                             btn.addEventListener("click", () => {
                             const eventID = btn.getAttribute("data-id");
 

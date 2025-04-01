@@ -1,3 +1,4 @@
+/* Events Page Styles */
 body {
     font-family: 'Inter', Arial, sans-serif;
     margin: 0;
@@ -8,38 +9,28 @@ body {
 
 /* Navbar Styles */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
     background-color: #333;
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
     z-index: 200;
-    padding: 15px 5%;
     box-sizing: border-box;
 }
 
-.navbar-logo {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-.navbar-links {
+.navbar ul {
     display: flex;
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 15px 5%;
+    justify-content: center;
 }
 
-.navbar-links li {
+.navbar li {
     margin: 0 15px;
 }
 
-.navbar-links a {
+.navbar a {
     text-decoration: none;
     color: white;
     font-size: 16px;
@@ -48,97 +39,95 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.navbar-links a:hover {
+.navbar a:hover {
     background-color: #4CAF50;
 }
 
-.navbar-cta {
-    display: flex;
-    gap: 15px;
-}
-
-.login-btn {
-    text-decoration: none;
+/* Header Styles */
+header {
+    padding-top: 100px;
+    text-align: center;
+    background: linear-gradient(135deg, #2C3E50 0%, #4CAF50 100%);
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: 1px solid white;
-    transition: background-color 0.3s ease;
+    padding-bottom: 30px;
 }
 
-.login-btn:hover {
-    background-color: #4CAF50;
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: white;
 }
 
+/* Events Section */
 .events {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    padding: 80px 5%;
+    padding: 50px 5%;
     background: linear-gradient(135deg, #2C3E50 0%, #4CAF50 100%);
-    min-height: 100vh;
+    min-height: calc(100vh - 200px);
     color: white;
 }
 
-.events-container {
-    margin-top: 25px;
-    max-width: 800px;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 50px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
-
-.events-container h1, .events-container h2 {
+.events h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
     color: white;
     text-align: center;
-    margin-bottom: 30px;
 }
 
-.events-container h1 {
-    font-size: 3rem;
-}
-
-.events-container h2 {
-    font-size: 2rem;
-}
-
-.event-form {
+.event-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    width: 100%;
     margin-bottom: 40px;
 }
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 10px;
-    color: white;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
+.event-subcontainer {
     background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+    width: 300px;
+    text-align: center;
+}
+
+.event-subcontainer:hover {
+    transform: scale(1.05);
+}
+
+.event-subcontainer h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
     color: white;
-    transition: border-color 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #4CAF50;
+.event-subcontainer p {
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.add-event-btn {
-    display: block;
-    width: 100%;
+.event-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.event-btn:hover {
+    background-color: #45a049;
+}
+
+.joined-events-button button {
     padding: 15px 30px;
     background-color: #4CAF50;
     color: white;
@@ -149,35 +138,95 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.add-event-btn:hover {
+.joined-events-button button:hover {
     background-color: #45a049;
 }
 
-.events-list {
-    background-color: rgba(255, 255, 255, 0.1);
+/* Loader */
+.loader {
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 5px solid #4CAF50;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 30px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Modal Styles */
+#eventModal, #confirmModal, #successModal, #alreadyJoinedModal, #joined-confirmModal, #joined-successModal, #donationSuccessModal, #donationErrorModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 40px 30px;
     border-radius: 10px;
-    padding: 30px;
-}
-
-.events-list ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.events-list li {
-    background-color: rgba(255, 255, 255, 0.05);
-    margin-bottom: 15px;
-    padding: 15px;
-    border-radius: 5px;
+    max-width: 500px;
+    width: 90%;
+    color: #333;
+    position: relative;
+    margin: auto;
+    justify-content: center;
     text-align: center;
-    color: rgba(255, 255, 255, 0.9);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.modal-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    margin: 10px 5px; /* Adjusted margins for better spacing */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
+    display: inline-block; /* Ensures buttons stay inline */
 }
 
-.events-list li:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.modal-content button:hover {
+    background-color: #45a049;
 }
 
+#cancelBtn, #cancelJoin {
+    background-color: #f44336;
+}
+
+#cancelBtn:hover, #cancelJoin:hover {
+    background-color: #d32f2f;
+}
 
 footer {
     background-color: #333;
@@ -188,16 +237,29 @@ footer {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .events-container {
-        padding: 30px 15px;
-        margin: 20px 10px;
-    }
-
-    .events-container h1 {
+    header h1 {
         font-size: 2rem;
     }
-
-    .events-container h2 {
+    
+    .events h2 {
         font-size: 1.5rem;
+    }
+    
+    .event-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .event-subcontainer {
+        width: 90%;
+    }
+    
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .navbar li {
+        margin: 5px 0;
     }
 }
