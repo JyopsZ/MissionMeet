@@ -618,12 +618,28 @@ async function submitDonation(userID, amount) {
   }
 }
 
+// Fetch Donations function (assuming donation documents have 'amount_donated')
+async function getDonations() {
+  const donationsArray = [];
+  const q = await getDocs(collection(db, "Donations"));
+  
+  q.forEach((doc) => {
+      const donationData = doc.data();
+      donationsArray.push({
+          amount_donated: donationData.amount_donated
+      });
+  });
+
+  return donationsArray;
+}
+
 
 /*
 ========================= EXPORTS =================================
 */
 // EXPORT
 export { submitDonation };
+export { getDonations };
 
 // JOIN EVENT EXPORT
 export { joinEvent };

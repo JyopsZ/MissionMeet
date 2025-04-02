@@ -7,77 +7,97 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
 </head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <a href="#" class="navbar-logo">MissionMeet</a>
-        <ul class="navbar-links">
-            <li><a href="Home Page.html">Home</a></li>
-            <li><a href="Events Page.html">Events</a></li>
-            <li><a href="Profile-Page.html">Profile</a></li>
-            <li><a href="donate page.html">Donate</a></li>
-        </ul>
-        <div class="navbar-cta">
-            <a href="#" class="login-btn" onclick="logout()">Logout</a>
-        </div>
-    </nav>
+    <body>
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <a href="#" class="navbar-logo">MissionMeet</a>
+            <ul class="navbar-links">
+                <li><a href="Home Page.html">Home</a></li>
+                <li><a href="Events Page.html">Events</a></li>
+                <li><a href="Profile-Page.html">Profile</a></li>
+                <li><a href="donate page.html">Donate</a></li>
+            </ul>
+            <div class="navbar-cta">
+                <a href="#" class="login-btn" onclick="logout()">Logout</a>
+            </div>
+        </nav>
 
-    <!-- Home Section -->
-    <div class="home-section">
-        <div class="home-content">
-            <h1>Welcome!</h1>
-            <p>Be part of something bigger than yourself</p>
+        <!-- Home Section -->
+        <div class="home-section">
+            <div class="home-content">
+                <h1>Welcome!</h1>
+                <p>Be part of something bigger than yourself</p>
 
-            <div class="home-container">
-                <div class="dashboard-section">
-                    <div class="dashboard-card">
-                        <h2>Dashboard Overview</h2>
-                        <div class="dashboard-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">Upcoming Events</span>
-                                <span class="stat-value">3</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Recent Activities</span>
-                                <span class="stat-value">5</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Active Members</span>
-                                <span class="stat-value">42</span>
+                <div class="home-container">
+                    <div class="dashboard-section">
+                        <div class="dashboard-card">
+                            <h2>Dashboard Overview</h2>
+                            <div class="dashboard-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Upcoming Events</span>
+                                    <span class="stat-value" id="upcoming-events-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Active Volunteers</span>
+                                    <span class="stat-value" id="active-volunteers-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Amount Raised</span>
+                                    <span class="stat-value" id="total-donated">₱0.00</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="quick-access-section">
-                    <div class="quick-access-card">
-                        <h2>Quick Actions</h2>
-                        <div class="action-buttons">
-                            <a href="Events Page.html" class="action-btn">
-                                <span>View Events</span>
-                            </a>
-                            <a href="Members Page.html" class="action-btn">
-                                <span>View Members</span>
-                            </a>
-                            <a href="Profile Page.html" class="action-btn">
-                                <span>Edit Profile</span>
-                            </a>
+                    <div class="quick-access-section">
+                        <div class="quick-access-card">
+                            <h2>Quick Actions</h2>
+                            <div class="action-buttons">
+                                <a href="Events Page.html" class="action-btn">
+                                    <span>View Events</span>
+                                </a>
+                                <a href="Profile-Page.html" class="action-btn">
+                                    <span>Profile</span>
+                                </a>
+                                <a href="donate page.html" class="action-btn">
+                                    <span>Donate</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <footer>
-        <p>&copy; 2025 MissionMeet. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>&copy; 2025 MissionMeet. All rights reserved.</p>
+        </footer>
 
-    <script>
-    function logout() {
-        localStorage.clear(); 
-        window.location.href = "../index.html"; 
-    }
-    </script>
-</body>
+        <script>
+            function logout() {
+                localStorage.clear(); 
+                window.location.href = "../index.html"; 
+            }
+        </script>
+
+        <script type="module">
+            import { getEvents, getUsers, getDonations } from "../Controller/DB_CRUD.js"; // Import necessary functions
+
+            document.addEventListener("DOMContentLoaded", async () => {
+                const events = await getEvents();   // Fetch all events
+                const users = await getUsers();     // Fetch all users
+                const donations = await getDonations(); // Fetch all donations
+
+                // Calculate statistics
+                const upcomingEventsCount = events.length;  // Number of events
+                const activeVolunteersCount = users.length;  // Number of users
+                const totalDonatedAmount = donations.reduce((sum, donation) => sum + donation.amount_donated, 0); // Sum of donations
+
+                // Update the dashboard with the stats
+                document.getElementById("upcoming-events-count").textContent = upcomingEventsCount;
+                document.getElementById("active-volunteers-count").textContent = activeVolunteersCount;
+                document.getElementById("total-donated").textContent = `₱${totalDonatedAmount.toLocaleString()}`;
+            });
+        </script>
+    </body>
 </html>
