@@ -89,7 +89,8 @@ async function getAdminOrg(adminID) {
         email: org.getEmail(),
         contact: org.getContact(),
         logo: org.getLogo(),
-        subPlan: org.getSubPlan()
+        subPlan: org.getSubPlan(),
+        events: org.getEvents()
       }
     };
   } catch (error) {
@@ -233,6 +234,16 @@ async function createEvent(name, details, date, time, image, location) {
   };
 }
 
+async function updateEvent(eventID, updatedData) {
+  try {
+    const eventRef = doc(db, "Events", eventID);
+    await updateDoc(eventRef, updatedData);
+    return { success: true, message: "Event updated successfully." };
+  } catch (error) {
+    console.error("Error updating event:", error);
+    return { success: false, message: "Failed to update event." };
+  }
+}
 
 /*
 ========================= USER FUNCTIONS =================================
@@ -661,6 +672,7 @@ export { updateOrg };
 // EVENT EXPORT
 export { getEvents };
 export { createEvent };
+export { updateEvent };
 
 // ADMIN EXPORT
 export { getAdmins };
