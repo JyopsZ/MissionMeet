@@ -24,7 +24,7 @@
 
     <div class="admin-container">
         <div class="options-container">
-            <h2>Admin Options</h2>
+            <h2>Admin Options</h2><h3>Admin ID:</h3>
             <div class="admin-options">
                 <button onclick="window.location.href='establish_org.html'">Establish an Organization</button>
                 <button onclick="window.location.href='create_event.html'">Create an Event</button>
@@ -37,6 +37,22 @@
     <footer>
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
     </footer>
+    <script type = "module">
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminID = localStorage.getItem('userID');
+            if (adminID) {
+                const adminiddisplay = document.querySelector('.options-container h3');
+                adminiddisplay.textContent = `Admin ID: ${adminID}`;
+            }
+        });
+    </script>
+
+    <script>
+        function logout() {
+            localStorage.clear(); 
+            window.location.href = "../../index.html"; 
+        }
+    </script>
 
 </body>
 </html>

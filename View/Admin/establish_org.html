@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Establish Organization</title>
-    <link rel="stylesheet" href="admin_ComponentStyle.css">
+    <link rel="stylesheet" href="establish_org.css">
+    <link rel="stylesheet" href="image_libraryStyle.css">
+
+    <style>
+
+        #bottom-footer,
+        footer {
+
+            position: relative;
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -23,12 +34,26 @@
     </header>
 
     <div class="admin-container">
-        <form action="organization_created.html" method="POST">
+        <form id="orgForm">
             <label for="orgName">Organization Name:</label>
             <input type="text" id="orgName" name="orgName" required>
 
             <label for="orgDescription">Organization Description:</label>
             <textarea id="orgDescription" name="orgDescription" required></textarea>
+
+            <label for="orgAddress">Organization Address:</label>
+            <input type="text" id="orgAddress" name="orgAddress">
+
+            <label for="orgEmail">Organization Email:</label>
+            <input type="text" id="orgEmail" name="orgEmail">
+
+            <label for="orgContact">Organization Contact:</label>
+            <input type="text" id="orgContact" name="orgContact">
+
+            <label for="orgLogo">Organization Logo:</label>
+            <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
+            <span id="selectedImageName">No image selected</span>
+            <input type="hidden" id="displayLogoName" name="displayLogoName"><br><br><br>
 
             <label for="subscriptionPlan">Choose Subscription Plan:</label>
             <select id="subscriptionPlan" name="subscriptionPlan">
@@ -41,9 +66,97 @@
         </form>
     </div>
 
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Select an Image</h2>
+            <div class="image-grid">
+            </div>
+            <br>
+            <button id="confirmImage" class="confirmButton">Confirm</button>
+        </div>
+    </div>
+
     <footer>
         <p>&copy; 2025 Mission Meet. All rights reserved.</p>
     </footer>
+
+    <script type="module">
+        import { createOrg } from "../../Controller/DB_CRUD.js";
+        
+        document.getElementById('orgForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const adminID = localStorage.getItem('userID');
+            const userType = localStorage.getItem('userType');
+            
+            if (userType !== 'admin') {
+                alert('Only admins can create organizations!');
+                return;
+            }
+            
+            const orgName = document.getElementById('orgName').value;
+            const orgDescription = document.getElementById('orgDescription').value;
+            const orgAddress = document.getElementById('orgAddress').value;
+            const orgEmail = document.getElementById('orgEmail').value;
+            const orgContact = document.getElementById('orgContact').value;
+            const orgSubPlan = document.getElementById('subscriptionPlan').value;
+            const logoInput = document.getElementById('displayLogoName').value;
+    
+            const result = await createOrg(
+                orgName, orgDescription, orgAddress, orgEmail, orgContact, logoInput, orgSubPlan, adminID
+            );
+            
+            if (result.success) {
+                alert('Organization created successfully!');
+                window.location.href = 'organization_created.html';
+            } else {
+                alert('Error creating organization: ' + (result.message || 'Unknown error'));
+            }
+        });
+
+        document.getElementById("openModal").addEventListener("click", function() {
+            document.getElementById("imageModal").style.display = "flex";
+        });
+
+        document.querySelector(".close").addEventListener("click", function() {
+            document.getElementById("imageModal").style.display = "none";
+        });
+
+        const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"]; // Replace with actual filenames
+        const imageGrid = document.querySelector(".image-grid");
+        let selectedImage = null;
+
+        imageFilenames.forEach(filename => {
+            
+            const img = document.createElement("img");
+            img.src = `../Images/${filename}`;
+            img.dataset.filename = filename;
+
+            img.addEventListener("click", function() {
+        
+                document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
+                img.classList.add("selected");
+                selectedImage = filename;
+             });
+
+            imageGrid.appendChild(img);
+        });
+
+        document.getElementById("confirmImage").addEventListener("click", function() {
+            
+            if (selectedImage) {
+                document.getElementById("displayLogoName").value = selectedImage;
+                document.getElementById("imageModal").style.display = "none";
+
+                document.getElementById("selectedImageName").textContent = selectedImage;
+            } 
+            
+            else {
+                alert("Please select an image.");
+            }
+        });
+    </script>
 
 </body>
 </html>

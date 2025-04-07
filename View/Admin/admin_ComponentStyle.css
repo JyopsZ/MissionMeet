@@ -8,13 +8,13 @@ body {
     flex-direction: column;
     height: 100vh;
     background-color: #f4f4f9;
-    padding-top: 100px;
+    padding-top: 160px;
 }
 
 .navbar {
     width: 100%;
     background-color: #333;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     z-index: 200;
@@ -63,6 +63,7 @@ header {
     max-width: 800px;
     padding-bottom: 80px;
     align-self: center;
+    margin-top: 180px;
 }
 
 form {
@@ -112,14 +113,12 @@ form button:hover {
 }
 
 /* Footer Styles */
+#bottom-footer,
 footer {
+    margin-top: auto;
     width: 100%;
     padding: 20px;
     background-color: #4CAF50;
     color: white;
     text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
 }
