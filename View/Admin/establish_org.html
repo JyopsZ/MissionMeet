@@ -39,6 +39,8 @@
 
     <div class="admin-container">
         <form id="orgForm">
+            <label for="orgName">Organization Name:</label>
+            <input type="text" id="orgName" name="orgName" required>
 
             <div class="form-group">
                 <label for="orgName">Organization Name:</label>
@@ -49,6 +51,26 @@
                 <label for="orgDescription">Organization Description:</label>
                 <textarea id="orgDescription" name="orgDescription" required></textarea>
             </div>
+            <label for="orgAddress">Organization Address:</label>
+            <input type="text" id="orgAddress" name="orgAddress">
+
+            <label for="orgEmail">Organization Email:</label>
+            <input type="text" id="orgEmail" name="orgEmail">
+
+            <label for="orgContact">Organization Contact:</label>
+            <input type="text" id="orgContact" name="orgContact">
+
+            <label for="orgLogo">Organization Logo:</label>
+            <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
+            <span id="selectedImageName">No image selected</span>
+            <input type="hidden" id="displayLogoName" name="displayLogoName"><br><br><br>
+
+            <label for="subscriptionPlan">Choose Subscription Plan:</label>
+            <select id="subscriptionPlan" name="subscriptionPlan">
+                <option value="basic">Basic</option>
+                <option value="premium">Premium</option>
+                <option value="enterprise">Enterprise</option>
+            </select>
 
             <div class="form-group">
                 <label for="orgAddress">Organization Address:</label>

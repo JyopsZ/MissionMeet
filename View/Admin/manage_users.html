@@ -26,13 +26,9 @@
     </header>
 
     <div class="admin-container">
-        <form action="user_managed.html" method="POST">
+        <form id="editUserForm">
             <label for="chooseUser">Choose User:</label>
-            <select id="chooseUser" name="chooseUser">
-                <option value="user1">User 1</option>
-                <option value="user2">User 2</option>
-                <option value="user3">User 3</option>
-            </select>
+            <select id="chooseUser" name="chooseUser"></select>
 
             <h3>Edit User Details</h3>
             <label for="userName">Name:</label>
@@ -50,12 +46,20 @@
         <div class="delete-user">
             <h3>Delete User</h3>
             <label for="deleteUser">Choose User to Delete:</label>
-            <select id="deleteUser" name="deleteUser">
-                <option value="user1">User 1</option>
-                <option value="user2">User 2</option>
-                <option value="user3">User 3</option>
-            </select>
+            <select id="deleteUser" name="deleteUser"></select>
             <button onclick="alert('User deleted')">Delete User</button>
+        </div>
+
+        <!-- Add User to Event Section -->
+        <div class="assign-user">
+            <h3>Assign User to Event</h3>
+            <label for="assignUser">Select User:</label>
+            <select id="assignUser" name="assignUser"></select>
+
+            <label for="assignEvent">Select Event:</label>
+            <select id="assignEvent" name="assignEvent"></select>
+
+            <button type="button" onclick="assignUserToEvent()">Add User to Event</button>
         </div>
     </div>
 
@@ -63,5 +67,54 @@
         <p>&copy; 2025 Our Website. All rights reserved.</p>
     </footer>
 
+    <script type="module">
+      import { getUsers, getEvents, joinEvent } from "../../Controller/DB_CRUD.js";
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const users = await getUsers();
+        const events = await getEvents();
+
+        const userDropdowns = ["chooseUser", "deleteUser", "assignUser"];
+        userDropdowns.forEach(id => {
+          const select = document.getElementById(id);
+          users.forEach(user => {
+            const opt = document.createElement("option");
+            opt.value = user.getUserID();
+            opt.textContent = user.getName();
+            select.appendChild(opt);
+          });
+        });
+
+        const eventSelect = document.getElementById("assignEvent");
+        events.forEach(event => {
+          const opt = document.createElement("option");
+          opt.value = event.getEventID();
+          opt.textContent = event.getName();
+          eventSelect.appendChild(opt);
+        });
+
+        const chooseUser = document.getElementById("chooseUser");
+        chooseUser.addEventListener("change", () => {
+          const user = users.find(u => u.getUserID() === chooseUser.value);
+          if (user) {
+            document.getElementById("userName").value = user.getName();
+            document.getElementById("userEmail").value = user.getEmail();
+            document.getElementById("userAge").value = 0; // placeholder, update if you track age
+          }
+        });
+
+        document.getElementById("editUserForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          alert("Edit logic not yet implemented.");
+        });
+      });
+
+      window.assignUserToEvent = async () => {
+        const userID = document.getElementById("assignUser").value;
+        const eventID = document.getElementById("assignEvent").value;
+        const result = await joinEvent(userID, eventID);
+        alert(result.message);
+      };
+    </script>
 </body>
 </html>
