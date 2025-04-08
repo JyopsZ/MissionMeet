@@ -1,6 +1,6 @@
  // Import the functions you need from the SDKs you need
  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
- import { getFirestore, getDocs, doc, collection, setDoc, arrayUnion, updateDoc, getDoc, arrayRemove } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+ import { getFirestore, getDocs, doc, collection, setDoc, arrayUnion, updateDoc, getDoc, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 import { User } from "../Model/User.js";
 import { Org } from "../Model/Org.js";
@@ -292,6 +292,35 @@ async function updateUser(userID, updatedData) {
   } catch (error) {
     console.error("Error updating user profile:", error);
     return { success: false, message: "Failed to update profile." };
+  }
+}
+
+async function deleteUser(userID) {
+  try {
+    const userRef = doc(db, "Users", userID);
+    const userSnapshot = await getDoc(userRef);
+
+    const userData = userSnapshot.data();
+    const eventsJoined = userData.events_joined || [];
+    
+    for (const eventID of eventsJoined) {
+      const eventRef = doc(db, "Events", eventID);
+      const eventSnapshot = await getDoc(eventRef);
+      
+      if (eventSnapshot.exists()) {
+        
+        await updateDoc(eventRef, {
+          members: arrayRemove(userID)
+        });
+      }
+    }
+    
+    await deleteDoc(userRef);
+    
+    return { success: true, message: "User deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return { success: false, message: error.message };
   }
 }
 /*
@@ -661,6 +690,7 @@ export { cancelEvent };
 // USER EXPORT
 export { getUsers }; 
 export { updateUser };
+export { deleteUser };
 
 
 // ORG EXPORT
