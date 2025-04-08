@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Edit Event</title>
-  <link rel="stylesheet" href="admin_ComponentStyle.css" />
+
+  <title>Create Event - MissionMeet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin_ComponentStyle.css">
+  <link rel="stylesheet" href="image_libraryStyle.css">
+</style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -44,8 +49,32 @@
       <label for="eventDescription">Event Description:</label>
       <textarea id="eventDescription" required></textarea>
 
+      <div class="form-group">
+        <label for="eventLocation">Event Location:</label>
+        <input type="text" id="eventLocation" name="eventLocation">
+      </div>
+
+      <div class="form-group">
+        <label for="displayImage">Display Image:</label><br><br>
+        <button type="button" id="openModal" class="image-select-btn">Choose Image</button>
+        <span id="selectedImageName">No image selected</span> <br><br>
+        <input type="hidden" id="displayImageName" name="displayImageName"> 
+        <div id="currentImagePreview"></div> <br>
+      </div>
+
       <button type="submit">Save Changes</button>
     </form>
+  </div>
+
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Select an Image</h2>
+        <div class="image-grid">
+        </div>
+        <br>
+        <button id="confirmImage" class="confirmButton">Confirm</button>
+    </div>
   </div>
 
   <footer>
@@ -65,6 +94,50 @@
         window.location.href = "../Login Page.html";
         return;
       }
+
+      // IMAGE CODE START
+      document.getElementById("openModal").addEventListener("click", function() {
+          document.getElementById("imageModal").style.display = "flex";
+      });
+
+      document.querySelector(".close").addEventListener("click", function() {
+          document.getElementById("imageModal").style.display = "none";
+      });
+
+      const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"];
+      const imageGrid = document.querySelector(".image-grid");
+      let selectedImage = null;
+
+      imageFilenames.forEach(filename => {
+          const img = document.createElement("img");
+          img.src = `../Images/${filename}`;
+          img.dataset.filename = filename;
+
+          img.addEventListener("click", function() {
+              document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
+              img.classList.add("selected");
+              selectedImage = filename;
+          });
+
+          imageGrid.appendChild(img);
+      });
+
+      document.getElementById("confirmImage").addEventListener("click", function() {
+          if (selectedImage) {
+              document.getElementById("displayImageName").value = selectedImage;
+              document.getElementById("imageModal").style.display = "none";
+              document.getElementById("selectedImageName").textContent = selectedImage;
+              
+              // Update preview
+              const currentImagePreview = document.getElementById('currentImagePreview');
+              currentImagePreview.innerHTML = `
+                  <img src="../Images/${selectedImage}" alt="Selected Image" style="max-width: 200px; margin-left: 25%;">
+              `;
+          } else {
+              alert("Please select an image.");
+          }
+      });
+      // IMAGE CODE END
 
       const orgResult = await getAdminOrg(adminID);
       if (!orgResult.success) {
@@ -102,6 +175,23 @@
           document.getElementById("eventDate").value = selected.getDate();
           document.getElementById("eventTime").value = selected.getTime();
           document.getElementById("eventDescription").value = selected.getDetails();
+          document.getElementById("eventLocation").value = selected.getLocation();
+
+          if (selected.getImage()) {
+            document.getElementById("displayImageName").value = selected.getImage();
+            document.getElementById("selectedImageName").textContent = selected.getImage();
+      
+      
+            const currentImagePreview = document.getElementById('currentImagePreview');
+            currentImagePreview.innerHTML = `
+            <img src="../Images/${selected.getImage()}" alt="Selected Image" style="max-width: 200px; margin-left: 25%;">
+            `;
+          }
+
+          if (eventLocation) {
+      
+            layerGroup.clearLayers(); // clear everytime dropdown is changed
+          }
         }
       });
       
@@ -114,7 +204,9 @@
           event_name: document.getElementById("eventName").value,
           event_date: document.getElementById("eventDate").value,
           event_time: document.getElementById("eventTime").value,
-          event_details: document.getElementById("eventDescription").value
+          event_details: document.getElementById("eventDescription").value,
+          event_location: document.getElementById("eventLocation").value,
+          event_image: document.getElementById("displayImageName").value,
         };
 
         const result = await updateEvent(selectedID, updatedData);
@@ -126,6 +218,13 @@
         }
       });
     });
+  </script>
+
+  <script>
+    function logout() {
+      localStorage.clear(); 
+      window.location.href = "../../index.html"; 
+    }
   </script>
 </body>
 </html>
