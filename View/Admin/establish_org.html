@@ -7,16 +7,6 @@
     <link rel="stylesheet" href="admin_ComponentStyle.css">
     <link rel="stylesheet" href="image_libraryStyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-
-        #bottom-footer,
-        footer {
-
-            position: relative;
-            margin-top: auto;
-        }
-    </style>
 </head>
 <body>
 
@@ -72,15 +62,35 @@
             </div>
 
             <div class="form-group">
-                <label for="subscriptionPlan">Choose Subscription Plan:</label>
-                <select id="subscriptionPlan" name="subscriptionPlan">
-                    <option value="basic">Basic</option>
-                    <option value="premium">Premium</option>
-                    <option value="enterprise">Enterprise</option>
-                </select>
-
-                <button type="submit">Create Organization</button>
+                <label>Choose Subscription Plan:</label>
+                <div class="plan-container">
+                    <div class="plan-box" data-value="basic" onclick="selectPlan(this)">
+                        <div class="plan-title">Basic</div>
+                        <ul class="plan-features">
+                            <li>20 attendee maximum</li>
+                            <li>1 admin account for event</li>
+                        </ul>
+                    </div>
+                    <div class="plan-box" data-value="premium" onclick="selectPlan(this)">
+                        <div class="plan-title">Premium</div>
+                        <ul class="plan-features">
+                            <li>100 attendee maximum</li>
+                            <li>5 admin account for event</li>
+                        </ul>
+                    </div>
+                    <div class="plan-box" data-value="enterprise" onclick="selectPlan(this)">
+                        <div class="plan-title">Enterprise</div>
+                        <ul class="plan-features">
+                            <li>Unli attendee maximum</li>
+                            <li>Unli admin account for event</li>
+                            <li>Priority 24/7 support from MissionMeet</li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="hidden" id="subscriptionPlan" name="subscriptionPlan" value="">
             </div>
+
+            <button type="submit">Create Organization</button>
         </form>
     </div>
 
@@ -102,6 +112,15 @@
     <script type="module">
         import { createOrg } from "../../Controller/DB_CRUD.js";
         
+        // Initialize plan selection on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default selection to Basic plan
+            const defaultPlan = document.querySelector('.plan-box[data-value="basic"]');
+            if (defaultPlan) {
+                selectPlan(defaultPlan);
+            }
+        });
+
         document.getElementById('orgForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -120,6 +139,11 @@
             const orgContact = document.getElementById('orgContact').value;
             const orgSubPlan = document.getElementById('subscriptionPlan').value;
             const logoInput = document.getElementById('displayLogoName').value;
+    
+            if (!orgSubPlan) {
+                alert('Please select a subscription plan');
+                return;
+            }
     
             const result = await createOrg(
                 orgName, orgDescription, orgAddress, orgEmail, orgContact, logoInput, orgSubPlan, adminID
@@ -141,39 +165,40 @@
             document.getElementById("imageModal").style.display = "none";
         });
 
-        const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"]; // Replace with actual filenames
+        const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"];
         const imageGrid = document.querySelector(".image-grid");
         let selectedImage = null;
 
         imageFilenames.forEach(filename => {
-            
             const img = document.createElement("img");
             img.src = `../Images/${filename}`;
             img.dataset.filename = filename;
 
             img.addEventListener("click", function() {
-        
                 document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
                 img.classList.add("selected");
                 selectedImage = filename;
-             });
+            });
 
             imageGrid.appendChild(img);
         });
 
         document.getElementById("confirmImage").addEventListener("click", function() {
-            
             if (selectedImage) {
                 document.getElementById("displayLogoName").value = selectedImage;
                 document.getElementById("imageModal").style.display = "none";
-
                 document.getElementById("selectedImageName").textContent = selectedImage;
-            } 
-            
-            else {
+            } else {
                 alert("Please select an image.");
             }
         });
+        window.selectPlan = function(element) {
+            document.querySelectorAll('.plan-box').forEach(box => {
+                box.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('subscriptionPlan').value = element.getAttribute('data-value');
+        };
     </script>
 
     <script>

@@ -5,214 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Edit Organization</title>
   <link rel="stylesheet" href="admin_ComponentStyle.css" />
-<link rel="stylesheet" href="image_libraryStyle.css">
+  <link rel="stylesheet" href="image_libraryStyle.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
-    <body>
-        <nav class="navbar">
-            <a href="#" class="navbar-logo">MissionMeet</a>
-            <ul class="navbar-links">
-                <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
-                <li><a href="manage_orgs.html">Manage Organizations</a></li>
-                <li><a href="events.html">Manage Events</a></li>
-                <li><a href="profile.html">Profile</a></li>
-            </ul>
-            <div class="navbar-cta">
-                <a href="#" class="login-btn" onclick="logout()">Logout</a>
-            </div>
-        </nav>
-
-        <header>
-            <h1>Edit Organization Info</h1>
-        </header>
-
-        
-        <div class="admin-container">
-            <form id="editOrgForm">
-
-                <div class="form-group">
-                    <label for="org_name">Name:</label>
-                    <input type="text" id="org_name" placeholder="Name" required />
-                </div>
-                
-                <div class="form-group">
-                    <label for="org_description">Description:</label>
-                    <textarea id="org_description" placeholder="Description" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="org_email">Email:</label>
-                    <input type="text" id="org_email" placeholder="Email"/>
-                </div>
-                
-                <div class="form-group">
-                    <label for="org_contact">Contact:</label>
-                    <input type="text" id="org_contact" placeholder="Contact"/>
-                </div>
-                
-                <div class="form-group">
-                    <label for="org_address">Address:</label>
-                    <input type="text" id="org_address" placeholder="Address"/>
-                </div>
-                
-                <div class="form-group">
-                    <label for="org_subplan">Subscription Plan:</label>
-                    <select id="org_subplan" name="org_subplan">
-                        <option value="basic">Basic</option>
-                        <option value="premium">Premium</option>
-                        <option value="enterprise">Enterprise</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="org_logo">Logo:</label><br><br>
-                    <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
-                    <span id="selectedImageName">No image selected</span>
-                    <input type="hidden" id="org_logo" name="org_logo">
-                    <div id="currentLogoPreview"></div>
-                </div> <br>
-                
-                <button type="submit">Save Changes</button>
-            </form>
+<body>
+    <nav class="navbar">
+        <a href="#" class="navbar-logo">MissionMeet</a>
+        <ul class="navbar-links">
+            <li><a href="admin_dashboard.html">Admin Dashboard</a></li>
+            <li><a href="manage_orgs.html">Manage Organizations</a></li>
+            <li><a href="events.html">Manage Events</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+        <div class="navbar-cta">
+            <a href="#" class="login-btn" onclick="logout()">Logout</a>
         </div>
-        
-        <div id="imageModal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Select an Image</h2>
-                <div class="image-grid">
-                </div>
-                <br>
-                <button id="confirmImage" class="confirmButton">Confirm</button>
+    </nav>
+
+    <header>
+        <h1>Edit Organization Info</h1>
+    </header>
+
+    <div class="admin-container">
+        <form id="editOrgForm">
+            <div class="form-group">
+                <label for="org_name">Name:</label>
+                <input type="text" id="org_name" placeholder="Name" required />
             </div>
+            
+            <div class="form-group">
+                <label for="org_description">Description:</label>
+                <textarea id="org_description" placeholder="Description" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="org_email">Email:</label>
+                <input type="text" id="org_email" placeholder="Email"/>
+            </div>
+            
+            <div class="form-group">
+                <label for="org_contact">Contact:</label>
+                <input type="text" id="org_contact" placeholder="Contact"/>
+            </div>
+            
+            <div class="form-group">
+                <label for="org_address">Address:</label>
+                <input type="text" id="org_address" placeholder="Address"/>
+            </div>
+            
+            <div class="form-group">
+                <label>Subscription Plan:</label>
+                <div class="plan-container">
+                    <div class="plan-box" data-value="basic" onclick="selectPlan(this)">
+                        <div class="plan-title">Basic</div>
+                        <ul class="plan-features">
+                            <li>20 attendee maximum</li>
+                            <li>1 admin account for event</li>
+                        </ul>
+                    </div>
+                    <div class="plan-box" data-value="premium" onclick="selectPlan(this)">
+                        <div class="plan-title">Premium</div>
+                        <ul class="plan-features">
+                            <li>100 attendee maximum</li>
+                            <li>5 admin account for event</li>
+                        </ul>
+                    </div>
+                    <div class="plan-box" data-value="enterprise" onclick="selectPlan(this)">
+                        <div class="plan-title">Enterprise</div>
+                        <ul class="plan-features">
+                            <li>Unli attendee maximum </li>
+                            <li>Unli admin account for event</li>
+                            <li>Priority 24/7 support from MissionMeet</li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="hidden" id="org_subplan" name="org_subplan" value="">
+            </div>
+            
+            <div class="form-group">
+                <label for="org_logo">Logo:</label><br><br>
+                <button type="button" id="openModal" class="image-select-btn">Choose Logo</button>
+                <span id="selectedImageName">No image selected</span>
+                <input type="hidden" id="org_logo" name="org_logo">
+                <div id="currentLogoPreview"></div>
+            </div> <br>
+            
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+    
+    <div id="imageModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Select an Image</h2>
+            <div class="image-grid">
+            </div>
+            <br>
+            <button id="confirmImage" class="confirmButton">Confirm</button>
         </div>
+    </div>
 
-        <footer>
-            <p>&copy; 2025 Mission Meet. All rights reserved.</p>
-        </footer>
+    <footer>
+        <p>&copy; 2025 Mission Meet. All rights reserved.</p>
+    </footer>
 
-        <script type="module">
-            import { getAdminOrg, updateOrg } from '../../Controller/DB_CRUD.js';
-        
-            document.addEventListener('DOMContentLoaded', async function() {
-                const userType = localStorage.getItem('userType');
-                const userID = localStorage.getItem('userID');
-        
-                if (userType !== 'admin') {
-                    alert('Only admins can manage organizations');
-                    window.location.href = '../Login Page.html';
+    <script type="module">
+        import { getAdminOrg, updateOrg } from '../../Controller/DB_CRUD.js';
+
+        window.selectPlan = function(element) {
+            document.querySelectorAll('.plan-box').forEach(box => {
+                box.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('org_subplan').value = element.getAttribute('data-value');
+        };
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userType = localStorage.getItem('userType');
+            const userID = localStorage.getItem('userID');
+    
+            if (userType !== 'admin') {
+                alert('Only admins can manage organizations');
+                window.location.href = '../Login Page.html';
+                return;
+            }
+    
+            const result = await getAdminOrg(userID);
+            let orgID = result.org.id;
+            
+            if (result.success) {
+                document.getElementById('org_name').value = result.org.name;
+                document.getElementById('org_description').value = result.org.description;
+                document.getElementById('org_email').value = result.org.email;
+                document.getElementById('org_contact').value = result.org.contact;
+                document.getElementById('org_address').value = result.org.address;
+                document.getElementById('org_subplan').value = result.org.subPlan;
+                document.getElementById('org_logo').value = result.org.logo;
+
+                const currentPlanBox = document.querySelector(`.plan-box[data-value="${result.org.subPlan}"]`);
+                if (currentPlanBox) {
+                    selectPlan(currentPlanBox);
+                }
+
+                if (result.org.logo) {
+                    document.getElementById('selectedImageName').textContent = result.org.logo;
+                    
+                    const currentLogoPreview = document.getElementById('currentLogoPreview');
+                    currentLogoPreview.innerHTML = `
+                        <img src="../Images/${result.org.logo}" alt="Current Logo" style="max-width: 200px; margin-top: 10px;">
+                    `;
+                }
+            }
+    
+            const editOrgForm = document.getElementById('editOrgForm');
+            editOrgForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!orgID) {
+                    alert('Organization ID not found');
                     return;
                 }
-        
-                const result = await getAdminOrg(userID);
-                let orgID = result.org.id;
-                
-                if (result.success) {
-                    document.getElementById('org_name').value = result.org.name;
-                    document.getElementById('org_description').value = result.org.description;
-                    document.getElementById('org_email').value = result.org.email;
-                    document.getElementById('org_contact').value = result.org.contact;
-                    document.getElementById('org_address').value = result.org.address;
-                    document.getElementById('org_subplan').value = result.org.subPlan;
-                    document.getElementById('org_logo').value = result.org.logo;
-
-                    if (result.org.logo) {
-
-                        
-                        document.getElementById('selectedImageName').textContent = result.org.logo;
-                        
-                        const currentLogoPreview = document.getElementById('currentLogoPreview');
-                        currentLogoPreview.innerHTML = `
-                            <img src="../Images/${result.org.logo}" alt="Current Logo" style="max-width: 200px; margin-top: 10px;">
-                        `;
+    
+                const orgData = {
+                    org_name: document.getElementById('org_name').value,
+                    org_description: document.getElementById('org_description').value,
+                    org_email: document.getElementById('org_email').value,
+                    org_contact: document.getElementById('org_contact').value,
+                    org_address: document.getElementById('org_address').value,
+                    org_subplan: document.getElementById('org_subplan').value,
+                    org_logo: document.getElementById('org_logo').value
+                };
+    
+                try {
+                    const updateResult = await updateOrg(orgID, orgData);
+                    if (updateResult.success) {
+                        alert('Organization updated successfully!');
+                    } else {
+                        alert('Failed to update organization: ' + updateResult.message);
                     }
+                } catch (error) {
+                    console.error('Error updating organization:', error);
+                    alert('An error occurred while updating the organization');
                 }
-        
-                const editOrgForm = document.getElementById('editOrgForm');
-                editOrgForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    if (!orgID) {
-                        alert('Organization ID not found');
-                        return;
-                    }
-        
-                    const orgData = {
-                        org_name: document.getElementById('org_name').value,
-                        org_description: document.getElementById('org_description').value,
-                        org_email: document.getElementById('org_email').value,
-                        org_contact: document.getElementById('org_contact').value,
-                        org_address: document.getElementById('org_address').value,
-                        org_subplan: document.getElementById('org_subplan').value,
-                        org_logo: document.getElementById('org_logo').value
-                    };
-        
-                    try {
-                        const updateResult = await updateOrg(orgID, orgData);
-                        if (updateResult.success) {
-                            alert('Organization updated successfully!');
-                        } else {
-                            alert('Failed to update organization: ' + updateResult.message);
-                        }
-                    } catch (error) {
-                        console.error('Error updating organization:', error);
-                        alert('An error occurred while updating the organization');
-                    }
-                });
-
-                // Image Selector Modal Stuff
-                document.getElementById("openModal").addEventListener("click", function() {
-                    document.getElementById("imageModal").style.display = "flex";
-                });
-
-                document.querySelector(".close").addEventListener("click", function() {
-                    document.getElementById("imageModal").style.display = "none";
-                });
-
-                const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"]; // Replace with actual filenames
-                const imageGrid = document.querySelector(".image-grid");
-                let selectedImage = null;
-
-                imageFilenames.forEach(filename => {
-                    
-                    const img = document.createElement("img");
-                    img.src = `../Images/${filename}`;
-                    img.dataset.filename = filename;
-
-                    img.addEventListener("click", function() {
-                
-                        document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
-                        img.classList.add("selected");
-                        selectedImage = filename;
-                    });
-
-                    imageGrid.appendChild(img);
-                });
-
-                document.getElementById("confirmImage").addEventListener("click", function() {
-                    
-                    if (selectedImage) {
-                        document.getElementById("org_logo").value = selectedImage;
-                        document.getElementById("imageModal").style.display = "none";
-
-                        document.getElementById("selectedImageName").textContent = selectedImage;
-                    } 
-                    
-                    else {
-                        alert("Please select an image.");
-                    }
-                });
             });
-        </script>
 
-        <script>
-            function logout() {
-                localStorage.removeItem('userType');
-                localStorage.removeItem('userID');
-                localStorage.removeItem('userName');
-                localStorage.removeItem('userEmail');
-                window.location.href = '../../index.html';
-            }
-        </script>
-    </body>
+            // Image Selector Modal Stuff
+            document.getElementById("openModal").addEventListener("click", function() {
+                document.getElementById("imageModal").style.display = "flex";
+            });
+
+            document.querySelector(".close").addEventListener("click", function() {
+                document.getElementById("imageModal").style.display = "none";
+            });
+
+            const imageFilenames = ["DefaultEvent.jpg", "DonationEvent.jpg", "PlasticEvent.jpg", "TurtleEvent.jpg", "DefaultLogo.jpg", "SaveTheTurtles.jpg"];
+            const imageGrid = document.querySelector(".image-grid");
+            let selectedImage = null;
+
+            imageFilenames.forEach(filename => {
+                const img = document.createElement("img");
+                img.src = `../Images/${filename}`;
+                img.dataset.filename = filename;
+
+                img.addEventListener("click", function() {
+                    document.querySelectorAll(".image-grid img").forEach(img => img.classList.remove("selected"));
+                    img.classList.add("selected");
+                    selectedImage = filename;
+                });
+
+                imageGrid.appendChild(img);
+            });
+
+            document.getElementById("confirmImage").addEventListener("click", function() {
+                if (selectedImage) {
+                    document.getElementById("org_logo").value = selectedImage;
+                    document.getElementById("imageModal").style.display = "none";
+                    document.getElementById("selectedImageName").textContent = selectedImage;
+                } else {
+                    alert("Please select an image.");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function logout() {
+            localStorage.removeItem('userType');
+            localStorage.removeItem('userID');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            window.location.href = '../../index.html';
+        }
+    </script>
+</body>
 </html>
